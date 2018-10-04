@@ -5,5 +5,5 @@ import java.util.*
 data class GasLogEntry(
         override val entryDate: Date,
         override val mileage: Int,
-        val gallonsAdded: Int
+        val gallonsAdded: Double
 ): BaseLogEntry
