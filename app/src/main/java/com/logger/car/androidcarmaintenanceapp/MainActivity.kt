@@ -19,7 +19,7 @@ class MainActivity: AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val model = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        val adapter = VehicleAdapter(model.getVehicles())
+        val adapter = VehicleAdapter(model.vehicles.value)
         //TODO: look into using an apply
         cars_recycler.adapter = adapter
         cars_recycler.layoutManager = LinearLayoutManager(this)
