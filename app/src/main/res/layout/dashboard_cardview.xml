@@ -14,6 +14,7 @@
 		android:layout_height="match_parent">
 
 		<android.support.constraint.ConstraintLayout
+			android:id="@+id/main_layout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:layout_margin="8dp"
@@ -25,6 +26,7 @@
 				android:id="@+id/car_name"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:paddingStart="4dp"
 				android:textAppearance="@style/TextAppearance.AppCompat.Title"
 				app:layout_constraintBottom_toBottomOf="@id/checkup_button"
 				app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +36,6 @@
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/checkup_button"
 				style="@style/RoundButton"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
 				android:text="Checkup"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
@@ -44,15 +44,19 @@
 				android:id="@+id/status"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginTop="2dp"
+				android:paddingStart="4dp"
 				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/car_name"
+				app:layout_constraintTop_toBottomOf="@id/checkup_button"
 				tools:text="Oil Level low" />
 
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/gas_button"
 				style="@style/GoodButton"
 				android:drawableStart="@drawable/icon_gas_white"
-				app:layout_constraintEnd_toStartOf="@id/oil_button"
+				app:layout_constraintEnd_toStartOf="@+id/oil_button"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintHorizontal_chainStyle="spread_inside"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/status"
 				tools:text="24 MPG" />
@@ -62,8 +66,9 @@
 				style="@style/GoodButton"
 				android:drawableStart="@drawable/icon_oil_white"
 				android:textSize="18sp"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintEnd_toStartOf="@+id/coolant_button"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintStart_toEndOf="@+id/gas_button"
 				app:layout_constraintTop_toBottomOf="@id/status"
 				tools:text="76%" />
 
@@ -73,15 +78,59 @@
 				android:drawableStart="@drawable/icon_coolant_white"
 				android:textSize="18sp"
 				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toEndOf="@id/oil_button"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintStart_toEndOf="@+id/oil_button"
 				app:layout_constraintTop_toBottomOf="@id/status"
 				tools:text="84%" />
 
 		</android.support.constraint.ConstraintLayout>
 
 		<android.support.constraint.ConstraintLayout
+			android:id="@+id/detail_layout"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:layout_margin="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/main_layout">
+
+			<android.support.v7.widget.AppCompatTextView
+				android:id="@+id/info_header"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Last checked:"
+				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+				android:textColor="@color/black"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+
+			<android.support.v7.widget.AppCompatTextView
+				android:id="@+id/info_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="September 15th at 124,474 miles"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/info_header" />
+
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/view_logs_button"
+				style="@style/RoundButton"
+				android:text="View Logs"
+				app:layout_constraintEnd_toStartOf="@+id/add_entry_button"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/info_text" />
+
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/add_entry_button"
+				style="@style/RoundButton"
+				android:text="Add Entry"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintHorizontal_bias="0.5"
+				app:layout_constraintStart_toEndOf="@+id/view_logs_button"
+				app:layout_constraintTop_toBottomOf="@id/info_text" />
 
 		</android.support.constraint.ConstraintLayout>
 
