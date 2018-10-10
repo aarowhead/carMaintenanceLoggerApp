@@ -1,6 +1,5 @@
 package com.logger.car.androidcarmaintenanceapp.logs
 
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,65 +12,60 @@ import android.view.ViewGroup
 import com.logger.car.androidcarmaintenanceapp.MainViewModel
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
-import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
-import com.logger.car.androidcarmaintenanceapp.getMonthName
-import kotlinx.android.synthetic.main.log_entry.*
-import kotlinx.android.synthetic.main.log_entry.view.*
+import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_recycler_view.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
-import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
-import java.text.NumberFormat
 import java.util.*
 
 //TODO: Major cleanup needed on this
 abstract class LogsFragment : Fragment() {
 
     var model: MainViewModel? = null
+    //TODO: Should this be protected?
+    lateinit var frameView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.logs_fragment, container, false)
-        model = activity?.let { ViewModelProviders.of(it).get(MainViewModel::class.java) }
         view.log_recycler.layoutManager = LinearLayoutManager(activity)
-        val adapter = LogAdapter()
+        model = activity?.let{ ViewModelProviders.of(it).get(MainViewModel::class.java) }
+        val adapter = getAdapter()
         view.log_recycler.adapter = adapter
-        view.level_indicator.isEnabled = false
-        val logEntries = getList()
-        logEntries?.observe(this, android.arch.lifecycle.Observer {
-            adapter.entries = it
-            adapter.notifyDataSetChanged()
-            val estimatedLevel = getEstimatedLevelByDate(it as List<FluidLogEntry>)
-            view.estimated_level_text.text = estimatedLevel.toString() + "%"
-            view.level_indicator.progress = estimatedLevel.toInt()
-        })
+        frameView = getIndicatorLayout()
+        view.indicator_frame.addView(frameView)
 
         view.add_log.setOnClickListener {
-            val dialogView = layoutInflater.inflate(R.layout.set_level_dialog_fragment, null)
-            dialogView.level_indicator_layout.level_indicator.progress = level_indicator.progress
-            activity?.let {
-                AlertDialog.Builder(it)
-                        .setTitle("Add Entry")
-                        .setView(dialogView)
-                        .setPositiveButton("Save") { _, _ ->
-                            dialogView.mileage_edit_text.text
-                            //TODO: make it get date from edit text
-                            val newEntry = FluidLogEntry(
-                                    Calendar.getInstance().time,
-                                    dialogView.mileage_edit_text.text.toString().toInt(),
-                                    dialogView.level_indicator_layout.level_indicator.progress)
-                            //TODO: figure out how to do safer indexing for when there is no 0 index?
-                            logEntries?.setValue(logEntries.value.also { it?.add(0, newEntry) })
-                        }
-                        .setNegativeButton("Cancel") { dialog, _ -> dialog?.dismiss() }
-                        .create()
-                        .show()
-            }
+            showAddEntryDialog(getDialogCustomView())
         }
         return view
     }
 
-    abstract fun getList(): MutableLiveData<MutableList<FluidLogEntry>>?
+    abstract fun getAdapter(): RecyclerView.Adapter<LogAdapter.LogViewHolder>
 
-    private fun getEstimatedLevelByDate(list: List<FluidLogEntry>) = list.first().level - daysBetween(Calendar.getInstance().time, list.first().entryDate) * getAverageLossPerDay(list)
+    open fun getIndicatorLayout(): View {
+        val view = layoutInflater.inflate(R.layout.level_indicator_layout, null)
+        view.level_indicator.isEnabled = false
+        return view
+    }
+
+    abstract fun getDialogCustomView(): View
+
+    private fun showAddEntryDialog(customView: View) {
+        activity?.let {
+            AlertDialog.Builder(it)
+                    .setTitle("Add Entry")
+                    .setView(customView)
+                    .setPositiveButton("Save") { _, _ ->
+                        onSaveClicked(customView)
+                    }
+                    .setNegativeButton("Cancel") { dialog, _ -> dialog?.dismiss() }
+                    .create()
+                    .show()
+        }
+    }
+
+    abstract fun onSaveClicked(customView: View)
+
+    protected fun getEstimatedLevelByDate(list: List<FluidLogEntry>) = list.first().level - daysBetween(Calendar.getInstance().time, list.first().entryDate) * getAverageLossPerDay(list)
 
     private fun getAverageLossPerDay(list: List<FluidLogEntry>) =
             getTotalLoss(list) / daysBetween(list.first().entryDate, list.last().entryDate).let { if (it == 0L) 1L else it }
@@ -93,25 +87,14 @@ abstract class LogsFragment : Fragment() {
 
     private fun daysBetween(d1: Date, d2: Date) = ((d2.time - d1.time) / (1000 * 60 * 60 * 24))
 
-    class LogAdapter : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
-
-        var entries: List<FluidLogEntry>? = emptyList()
+    abstract class LogAdapter<T>(var entries: List<T> = emptyList()) : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
 
         class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                LogViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.log_entry, parent, false))
+        abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder
 
-        override fun getItemCount() = entries?.size ?: 0
+        override fun getItemCount() = entries.size
 
-        override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
-            entries?.get(position)?.let {
-                holder.itemView.level_indicator.progress = it.level
-                holder.itemView.month.text = it.entryDate.getMonthName()
-                holder.itemView.day.text = it.entryDate.getDayOfMonth().toString()
-                holder.itemView.mileage.text = NumberFormat.getNumberInstance(Locale.US).format(it.mileage) + " miles"
-                holder.itemView.percentage_indicator.text = it.level.toString() + "%"
-            }
-        }
+        abstract override fun onBindViewHolder(holder: LogViewHolder, position: Int)
     }
 }
