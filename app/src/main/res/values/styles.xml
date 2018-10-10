@@ -7,5 +7,30 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    <style name="RoundButton" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+		<item name="android:elevation">4dp</item>
+		<item name="android:textColor">@color/defaultButtonTextColor</item>
+		<item name="android:layout_width">110dp</item>
+		<item name="android:layout_height">wrap_content</item>
+    </style>
+
+	<style name="CriticalButton" parent="RoundButton">
+		<item name="android:backgroundTint">@color/critical</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+
+	<style name="WarningButton" parent="RoundButton">
+		<item name="android:backgroundTint">@color/warning</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+
+	<style name="GoodButton" parent="RoundButton">
+		<item name="android:backgroundTint">@color/good</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
 
 </resources>

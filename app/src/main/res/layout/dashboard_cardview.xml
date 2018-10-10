@@ -1,62 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_margin="12dp"
-    app:cardCornerRadius="10dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="12dp"
+	app:cardCornerRadius="24dp"
+	app:cardElevation="8dp">
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp">
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/car_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Honda Accord" />
+		<android.support.constraint.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_margin="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/car_name"
-            tools:text="Oil Level low" />
+			<android.support.v7.widget.AppCompatTextView
+				android:id="@+id/car_name"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="@style/TextAppearance.AppCompat.Title"
+				app:layout_constraintBottom_toBottomOf="@id/checkup_button"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="@id/checkup_button"
+				tools:text="Honda Accord" />
 
-        <Button
-            android:id="@+id/gas_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/oil_button"
-            app:layout_constraintTop_toBottomOf="@id/status"
-            tools:text="24 MPG" />
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/checkup_button"
+				style="@style/RoundButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Checkup"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/oil_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status"
-            tools:text="76%" />
+			<android.support.v7.widget.AppCompatTextView
+				android:id="@+id/status"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/car_name"
+				tools:text="Oil Level low" />
 
-        <Button
-            android:id="@+id/coolant_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/oil_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status"
-            tools:text="84%" />
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/gas_button"
+				style="@style/GoodButton"
+				android:drawableStart="@drawable/icon_gas_white"
+				app:layout_constraintEnd_toStartOf="@id/oil_button"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/status"
+				tools:text="24 MPG" />
 
-    </android.support.constraint.ConstraintLayout>
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/oil_button"
+				style="@style/GoodButton"
+				android:drawableStart="@drawable/icon_oil_white"
+				android:textSize="18sp"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/status"
+				tools:text="76%" />
+
+			<android.support.v7.widget.AppCompatButton
+				android:id="@+id/coolant_button"
+				style="@style/GoodButton"
+				android:drawableStart="@drawable/icon_coolant_white"
+				android:textSize="18sp"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toEndOf="@id/oil_button"
+				app:layout_constraintTop_toBottomOf="@id/status"
+				tools:text="84%" />
+
+		</android.support.constraint.ConstraintLayout>
+
+		<android.support.constraint.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
+
+		</android.support.constraint.ConstraintLayout>
+
+	</android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
