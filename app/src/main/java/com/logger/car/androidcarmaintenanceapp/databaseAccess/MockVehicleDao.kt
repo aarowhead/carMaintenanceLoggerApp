@@ -11,15 +11,15 @@ class MockVehicleDao: VehicleDao {
             Vehicle(
                     "Honda",
                     "Accord",
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 80)),
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 100)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 80, FluidLogEntry.FluidType.OIL)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 10, FluidLogEntry.FluidType.COOLANT)),
                     mutableListOf(GasLogEntry(Calendar.getInstance().time, 127000, 13.0))
             ),
             Vehicle(
                     "Toyota",
                     "Camry",
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 50000, 30)),
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 70000, 65)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 50000, 30, FluidLogEntry.FluidType.OIL)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 70000, 65, FluidLogEntry.FluidType.COOLANT)),
                     mutableListOf(GasLogEntry(Calendar.getInstance().time, 90000, 2.0))
             )
     )

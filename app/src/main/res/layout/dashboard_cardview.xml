@@ -52,18 +52,19 @@
 
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/gas_button"
-				style="@style/GoodButton"
+				style="@style/ColoredButton"
+				android:background="@drawable/good_button"
 				android:drawableStart="@drawable/icon_gas_white"
 				app:layout_constraintEnd_toStartOf="@+id/oil_button"
 				app:layout_constraintHorizontal_bias="0.5"
 				app:layout_constraintHorizontal_chainStyle="spread_inside"
 				app:layout_constraintStart_toStartOf="parent"
 				app:layout_constraintTop_toBottomOf="@id/status"
-				tools:text="24 MPG" />
+				tools:text="24.3 MPG" />
 
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/oil_button"
-				style="@style/GoodButton"
+				style="@style/ColoredButton"
 				android:drawableStart="@drawable/icon_oil_white"
 				android:textSize="18sp"
 				app:layout_constraintEnd_toStartOf="@+id/coolant_button"
@@ -74,7 +75,7 @@
 
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/coolant_button"
-				style="@style/GoodButton"
+				style="@style/ColoredButton"
 				android:drawableStart="@drawable/icon_coolant_white"
 				android:textSize="18sp"
 				app:layout_constraintEnd_toEndOf="parent"

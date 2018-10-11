@@ -8,6 +8,9 @@
     <color name="colorRipple">#bfbfbf</color>
     <color name="defaultButtonTextColor">#14A4CF</color>
     <color name="critical">#FF2900</color>
+    <color name="criticalPressed">#80FF2900</color>
     <color name="warning">#FFA200</color>
+    <color name="warningPressed">#80FFA200</color>
     <color name="good">#3ECF14</color>
+    <color name="goodPressed">#803ECF14</color>
 </resources>
