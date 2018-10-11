@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<android.support.v7.widget.AppCompatEditText
+		android:id="@+id/gallons_added_edit_text"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="Gallons Added"
+		android:inputType="numberDecimal"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
+
+	<android.support.v7.widget.AppCompatEditText
+		android:id="@+id/mileage_edit_text"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="Mileage"
+		android:inputType="number"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/gallons_added_edit_text" />
+
+	<android.support.v7.widget.AppCompatEditText
+		android:id="@+id/date_edit_text"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:hint="Date"
+		android:inputType="date"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/mileage_edit_text" />
+
+	<android.support.v7.widget.AppCompatImageView
+		android:id="@+id/gas_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/icon_gas_black"
+		app:layout_constraintBottom_toTopOf="@id/skip_button"
+		app:layout_constraintEnd_toStartOf="@+id/oil_icon"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent" />
+
+	<android.support.v7.widget.AppCompatImageView
+		android:id="@+id/oil_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/icon_oil_disabled"
+		app:layout_constraintBottom_toTopOf="@id/skip_button"
+		app:layout_constraintEnd_toStartOf="@+id/coolant_icon"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toEndOf="@+id/gas_icon" />
+
+	<android.support.v7.widget.AppCompatImageView
+		android:id="@+id/coolant_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/icon_coolant_disabled"
+		app:layout_constraintBottom_toTopOf="@id/skip_button"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toEndOf="@+id/oil_icon" />
+
+	<android.support.v7.widget.AppCompatButton
+		android:id="@+id/skip_button"
+		style="@style/RoundButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Skip"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toStartOf="@id/next_button" />
+
+	<android.support.v7.widget.AppCompatButton
+		android:id="@+id/next_button"
+		style="@style/RoundButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Next"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
