@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.logger.car.androidcarmaintenanceapp.R
 
 class CheckupMainFragment() : DialogFragment() {
@@ -16,7 +17,7 @@ class CheckupMainFragment() : DialogFragment() {
 	}
 
 	override fun onCreateDialog(savedInstanceState: Bundle?) = AlertDialog.Builder(requireContext()).apply {
-		setTitle("Gas Station Checkup")
+		setTitle("Checkup")
 		customView = requireActivity().layoutInflater.inflate(R.layout.checkup_frame_layout, null)
 		setView(customView)
 		childFragmentManager.beginTransaction().run {
@@ -42,7 +43,10 @@ class CheckupMainFragment() : DialogFragment() {
 							commit()
 							getButton(AlertDialog.BUTTON_POSITIVE).run {
 								text = "Finish"
-								setOnClickListener { dismiss() }
+								setOnClickListener {
+									dismiss()
+									Toast.makeText(context, "Should save but not implemented yet...Sorry", Toast.LENGTH_LONG).show()
+								}
 							}
 						}
 					}
