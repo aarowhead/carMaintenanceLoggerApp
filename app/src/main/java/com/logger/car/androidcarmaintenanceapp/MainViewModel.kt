@@ -1,6 +1,5 @@
 package com.logger.car.androidcarmaintenanceapp
 
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
@@ -14,7 +13,7 @@ class MainViewModel : ViewModel() {
                     "Honda",
                     "Accord",
                     mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 80)),
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 100)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 10)),
                     mutableListOf(GasLogEntry(Calendar.getInstance().time, 127000, 13.0))
             ), Vehicle(
                     "Toyota",

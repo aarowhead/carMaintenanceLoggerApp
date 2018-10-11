@@ -12,7 +12,7 @@ class MockVehicleDao: VehicleDao {
                     "Honda",
                     "Accord",
                     mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 80)),
-                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 100)),
+                    mutableListOf(FluidLogEntry(Calendar.getInstance().time, 127000, 10)),
                     mutableListOf(GasLogEntry(Calendar.getInstance().time, 127000, 13.0))
             ),
             Vehicle(
