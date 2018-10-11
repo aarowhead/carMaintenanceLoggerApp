@@ -1,15 +1,15 @@
 package com.logger.car.androidcarmaintenanceapp
 
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.logger.car.androidcarmaintenanceapp.checkup.CheckupMainFragment
 import com.logger.car.androidcarmaintenanceapp.domain.BaseLogEntry
 import com.logger.car.androidcarmaintenanceapp.domain.Vehicle
 import kotlinx.android.synthetic.main.dashboard_activity.*
@@ -68,7 +68,7 @@ class DashboardActivity : AppCompatActivity() {
 					detail_layout.visibility = View.GONE
 					car_name.text = "${vehicle.make} ${vehicle.model}"
 					status.text = "Testing"
-					checkup_button.setOnClickListener { TODO("start checkup once it has been added to the app") }
+					checkup_button.setOnClickListener { CheckupMainFragment().show(supportFragmentManager, "TAG") }
 					gas_button.run {
 						text = "18.1 MPG"
 						setOnClickListener { if (!isSelected) {
