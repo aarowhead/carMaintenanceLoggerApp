@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import java.util.*
 
 data class Vehicle(
+		val id: Int,
         val make: String,
         val model: String,
         val oilLogs: MutableLiveData<MutableList<FluidLogEntry>> = MutableLiveData(),

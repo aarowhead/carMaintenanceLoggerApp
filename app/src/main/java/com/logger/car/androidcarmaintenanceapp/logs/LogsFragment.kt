@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.logger.car.androidcarmaintenanceapp.MainViewModel
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
@@ -20,14 +19,14 @@ import java.util.*
 //TODO: Major cleanup needed on this
 abstract class LogsFragment : Fragment() {
 
-    var model: MainViewModel? = null
+    var model: LogsViewModel? = null
     //TODO: Should this be protected?
     lateinit var frameView: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.logs_fragment, container, false)
         view.log_recycler.layoutManager = LinearLayoutManager(activity)
-        model = activity?.let{ ViewModelProviders.of(it).get(MainViewModel::class.java) }
+        model = activity?.let{ ViewModelProviders.of(it).get(LogsViewModel::class.java) }
         val adapter = getAdapter()
         view.log_recycler.adapter = adapter
         frameView = getIndicatorLayout()

@@ -1,6 +1,8 @@
 package com.logger.car.androidcarmaintenanceapp.logs
 
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModelProviders
+import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentPagerAdapter
@@ -11,8 +13,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.logger.car.androidcarmaintenanceapp.R
+import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity.Companion.MAINTENANCE_TYPE
+import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity.Companion.VEHICLE_ID
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
+import com.logger.car.androidcarmaintenanceapp.domain.MaintenanceType
 import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
 import com.logger.car.androidcarmaintenanceapp.getMonthName
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
@@ -35,6 +40,10 @@ class LogsActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.logs_activity)
+		val model = ViewModelProviders.of(this).get(LogsViewModel::class.java)
+		//TODO: Figure out if there is a way to default the value to null
+		val vehicleId = intent.getIntExtra(VEHICLE_ID, -1)
+		if (vehicleId != -1) model.setCurrentVehicle(vehicleId)
 		val adapter = LogsPagerAdapter()
 		val viewSwitcher = logs_view_switcher
 		viewSwitcher.adapter = adapter
@@ -73,6 +82,12 @@ class LogsActivity : AppCompatActivity() {
 				else -> false
 			}
 		}
+		viewSwitcher.currentItem =
+				when (intent.getSerializableExtra(MAINTENANCE_TYPE)) {
+					MaintenanceType.OIL -> 1
+					MaintenanceType.COOLANT -> 2
+					else -> 0
+				}
 	}
 
 	//TODO: Combine duplicate code in Oil and Coolant fragments!!!!!!!!!!!!!!!!!!
@@ -82,7 +97,7 @@ class LogsActivity : AppCompatActivity() {
 
 		override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 			val view = super.onCreateView(inflater, container, savedInstanceState)
-			oilLogs = model?.selectedVehicle?.oilLogs
+			oilLogs = model?.currentVehicle?.oilLogs
 			oilLogs?.observe(this, android.arch.lifecycle.Observer {
 				val estimatedLevel = getEstimatedLevelByDate(it as List<FluidLogEntry>)
 				view.estimated_level_text.text = estimatedLevel.toString() + "%"
@@ -133,7 +148,7 @@ class LogsActivity : AppCompatActivity() {
 
 		override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 			val view = super.onCreateView(inflater, container, savedInstanceState)
-			coolantLogs = model?.selectedVehicle?.coolantLogs
+			coolantLogs = model?.currentVehicle?.coolantLogs
 			coolantLogs?.observe(this, android.arch.lifecycle.Observer {
 				val estimatedLevel = getEstimatedLevelByDate(it as List<FluidLogEntry>)
 				view.estimated_level_text.text = estimatedLevel.toString() + "%"
@@ -185,7 +200,7 @@ class LogsActivity : AppCompatActivity() {
 		override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 			val view = super.onCreateView(inflater, container, savedInstanceState)
 			view.estimated_level_label.visibility = View.INVISIBLE
-			gasLogs = model?.selectedVehicle?.gasLogs
+			gasLogs = model?.currentVehicle?.gasLogs
 			gasLogs?.observe(this, android.arch.lifecycle.Observer {
 				view.mpg_indicator.text = "24 MPG"
 				adapter.entries = it as List<GasLogEntry>
