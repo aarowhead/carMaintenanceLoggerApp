@@ -3,7 +3,9 @@ package com.logger.car.androidcarmaintenanceapp.domain
 import java.util.*
 
 data class GasLogEntry(
-        override val entryDate: Date,
-        override val mileage: Int,
-        val gallonsAdded: Double
-): BaseLogEntry
+        override var entryDate: Date? = null,
+		override var mileage: Int? = null,
+        var gallonsAdded: Double? = null
+): BaseLogEntry {
+	override fun isValidLogEntry() = entryDate != null && mileage != null && gallonsAdded != null
+}

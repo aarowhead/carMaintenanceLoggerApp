@@ -43,4 +43,34 @@
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toEndOf="@+id/oil_icon" />
 
+	<android.support.v7.widget.AppCompatButton
+		android:id="@+id/back_button"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:text="Back"
+		app:layout_constraintTop_toBottomOf="@id/gas_icon"
+		app:layout_constraintEnd_toStartOf="@+id/cancel_button"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toStartOf="parent" />
+
+	<android.support.v7.widget.AppCompatButton
+		android:id="@+id/cancel_button"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:text="Cancel"
+		app:layout_constraintTop_toTopOf="@id/back_button"
+		app:layout_constraintEnd_toStartOf="@+id/proceed_button"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toEndOf="@+id/back_button" />
+
+	<android.support.v7.widget.AppCompatButton
+		android:id="@+id/proceed_button"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:text="Finish"
+		app:layout_constraintTop_toTopOf="@id/back_button"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintHorizontal_bias="0.5"
+		app:layout_constraintStart_toEndOf="@+id/cancel_button" />
+
 </android.support.constraint.ConstraintLayout>

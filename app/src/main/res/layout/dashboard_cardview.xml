@@ -36,7 +36,7 @@
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/checkup_button"
 				style="@style/RoundButton"
-				android:text="Checkup"
+				android:text="Update All"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
 

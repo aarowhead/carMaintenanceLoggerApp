@@ -19,81 +19,86 @@ import java.util.*
 //TODO: Major cleanup needed on this
 abstract class LogsFragment : Fragment() {
 
-    var model: LogsViewModel? = null
-    //TODO: Should this be protected?
-    lateinit var frameView: View
+	var model: LogsViewModel? = null
+	//TODO: Should this be protected?
+	lateinit var frameView: View
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.logs_fragment, container, false)
-        view.log_recycler.layoutManager = LinearLayoutManager(activity)
-        model = activity?.let{ ViewModelProviders.of(it).get(LogsViewModel::class.java) }
-        val adapter = getAdapter()
-        view.log_recycler.adapter = adapter
-        frameView = getIndicatorLayout()
-        view.indicator_frame.addView(frameView)
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+		val view = inflater.inflate(R.layout.logs_fragment, container, false)
+		view.log_recycler.layoutManager = LinearLayoutManager(activity)
+		model = activity?.let { ViewModelProviders.of(it).get(LogsViewModel::class.java) }
+		val adapter = getAdapter()
+		view.log_recycler.adapter = adapter
+		frameView = getIndicatorLayout()
+		view.indicator_frame.addView(frameView)
 
-        view.add_log.setOnClickListener {
-            showAddEntryDialog(getDialogCustomView())
-        }
-        return view
-    }
+		view.add_log.setOnClickListener {
+			showAddEntryDialog(getDialogCustomView())
+		}
+		return view
+	}
 
-    abstract fun getAdapter(): RecyclerView.Adapter<LogAdapter.LogViewHolder>
+	abstract fun getAdapter(): RecyclerView.Adapter<LogAdapter.LogViewHolder>
 
-    open fun getIndicatorLayout(): View {
-        val view = layoutInflater.inflate(R.layout.level_indicator_layout, null)
-        view.level_indicator.isEnabled = false
-        return view
-    }
+	open fun getIndicatorLayout(): View {
+		val view = layoutInflater.inflate(R.layout.level_indicator_layout, null)
+		view.level_indicator.isEnabled = false
+		return view
+	}
 
-    abstract fun getDialogCustomView(): View
+	abstract fun getDialogCustomView(): View
 
-    private fun showAddEntryDialog(customView: View) {
-        activity?.let {
-            AlertDialog.Builder(it)
-                    .setTitle("Add Entry")
-                    .setView(customView)
-                    .setPositiveButton("Save") { _, _ ->
-                        onSaveClicked(customView)
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ -> dialog?.dismiss() }
-                    .create()
-                    .show()
-        }
-    }
+	private fun showAddEntryDialog(customView: View) {
+		activity?.let {
+			AlertDialog.Builder(it)
+					.setTitle("Add Entry")
+					.setView(customView)
+					.setPositiveButton("Save") { _, _ ->
+						onSaveClicked(customView)
+					}
+					.setNegativeButton("Cancel") { dialog, _ -> dialog?.dismiss() }
+					.create()
+					.show()
+		}
+	}
 
-    abstract fun onSaveClicked(customView: View)
+	abstract fun onSaveClicked(customView: View)
 
-    protected fun getEstimatedLevelByDate(list: List<FluidLogEntry>) = list.first().level - daysBetween(Calendar.getInstance().time, list.first().entryDate) * getAverageLossPerDay(list)
+	protected fun getEstimatedLevelByDate(list: List<FluidLogEntry>) = list.first().entryDate?.let {
+		(list.first().level ?: 100) - daysBetween(Calendar.getInstance().time, it) * getAverageLossPerDay(list)
+	} ?: 0
 
-    private fun getAverageLossPerDay(list: List<FluidLogEntry>) =
-            getTotalLoss(list) / daysBetween(list.first().entryDate, list.last().entryDate).let { if (it == 0L) 1L else it }
+	private fun getAverageLossPerDay(list: List<FluidLogEntry>) = list.first().entryDate?.let { first ->
+		list.last().entryDate?.let { last ->
+			getTotalLoss(list) / daysBetween(first, last).let { if (it == 0L) 1L else it }
+		}
+	} ?: 0
 
-    private fun getTotalLoss(list: List<FluidLogEntry>): Int {
-        var previousLevel: Int? = null
-        var totalLoss = 0
-        list.forEach { entry ->
-            previousLevel?.let {
-                val difference = it - entry.level
-                if (difference > 0) {
-                    totalLoss += difference
-                }
-            }
-            previousLevel = entry.level
-        }
-        return totalLoss
-    }
+	private fun getTotalLoss(list: List<FluidLogEntry>): Int {
+		var previousLevel: Int? = null
+		var totalLoss = 0
+		list.forEach { entry ->
+			previousLevel?.let {
+				val difference = it - (entry.level ?: 0)
+				if (difference > 0) {
+					totalLoss += difference
+				}
+			}
+			previousLevel = entry.level
+		}
+		return totalLoss
+	}
 
-    private fun daysBetween(d1: Date, d2: Date) = ((d2.time - d1.time) / (1000 * 60 * 60 * 24))
+	private fun daysBetween(d1: Date, d2: Date) = ((d2.time - d1.time) / (1000 * 60 * 60 * 24))
 
-    abstract class LogAdapter<T>(var entries: List<T> = emptyList()) : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
+	abstract class LogAdapter<T>(var entries: List<T> = emptyList()) : RecyclerView.Adapter<LogAdapter.LogViewHolder>() {
 
-        class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+		class LogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-        abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder
+		abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder
 
-        override fun getItemCount() = entries.size
+		override fun getItemCount() = entries.size
 
-        abstract override fun onBindViewHolder(holder: LogViewHolder, position: Int)
-    }
+		abstract override fun onBindViewHolder(holder: LogViewHolder, position: Int)
+	}
 }
