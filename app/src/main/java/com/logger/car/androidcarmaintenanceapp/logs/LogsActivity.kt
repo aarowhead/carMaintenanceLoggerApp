@@ -2,7 +2,6 @@ package com.logger.car.androidcarmaintenanceapp.logs
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentPagerAdapter
@@ -101,7 +100,7 @@ class LogsActivity : AppCompatActivity() {
 			oilLogs?.observe(this, android.arch.lifecycle.Observer {
 				val estimatedLevel = getEstimatedLevelByDate(it as List<FluidLogEntry>)
 				view.estimated_level_text.text = estimatedLevel.toString() + "%"
-				view.level_indicator.progress = estimatedLevel.toInt()
+				view.level_indicator.progress = estimatedLevel?.toInt() ?: 0
 				adapter.entries = it
 				adapter.notifyDataSetChanged()
 			})
@@ -131,9 +130,11 @@ class LogsActivity : AppCompatActivity() {
 
 			override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
 				entries[position].let {
-					holder.itemView.historic_level_indicator.progress = it.level
-					holder.itemView.month.text = it.entryDate.getMonthName()
-					holder.itemView.day.text = it.entryDate.getDayOfMonth().toString()
+					holder.itemView.historic_level_indicator.progress = it.level ?: 0
+					it.entryDate?.let { date ->
+						holder.itemView.month.text = date.getMonthName()
+						holder.itemView.day.text = date.getDayOfMonth().toString()
+					}
 					holder.itemView.mileage.text = NumberFormat.getNumberInstance(Locale.US).format(it.mileage) + " miles"
 					holder.itemView.percentage_indicator.text = it.level.toString() + "%"
 				}
@@ -152,7 +153,7 @@ class LogsActivity : AppCompatActivity() {
 			coolantLogs?.observe(this, android.arch.lifecycle.Observer {
 				val estimatedLevel = getEstimatedLevelByDate(it as List<FluidLogEntry>)
 				view.estimated_level_text.text = estimatedLevel.toString() + "%"
-				view.level_indicator.progress = estimatedLevel.toInt()
+				view.level_indicator.progress = estimatedLevel?.toInt() ?: 0
 				adapter.entries = it
 				adapter.notifyDataSetChanged()
 			})
@@ -182,9 +183,11 @@ class LogsActivity : AppCompatActivity() {
 
 			override fun onBindViewHolder(holder: LogViewHolder, position: Int) {
 				entries[position].let {
-					holder.itemView.historic_level_indicator.progress = it.level
-					holder.itemView.month.text = it.entryDate.getMonthName()
-					holder.itemView.day.text = it.entryDate.getDayOfMonth().toString()
+					holder.itemView.historic_level_indicator.progress = it.level ?: 0
+					it.entryDate?.let { date ->
+						holder.itemView.month.text = date.getMonthName()
+						holder.itemView.day.text = date.getDayOfMonth().toString()
+					}
 					holder.itemView.mileage.text = NumberFormat.getNumberInstance(Locale.US).format(it.mileage) + " miles"
 					holder.itemView.percentage_indicator.text = it.level.toString() + "%"
 				}
