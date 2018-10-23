@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_gas"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/icon_gas_disabled"
         android:title="Gas"/>
 
     <item
         android:id="@+id/navigation_oil"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/icon_oil_disabled"
         android:title="Oil"/>
 
     <item
         android:id="@+id/navigation_coolant"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/icon_coolant_disabled"
         android:title="Coolant"/>
 
 </menu>

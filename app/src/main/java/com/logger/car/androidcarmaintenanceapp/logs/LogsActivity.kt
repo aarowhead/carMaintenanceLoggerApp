@@ -2,14 +2,12 @@ package com.logger.car.androidcarmaintenanceapp.logs
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModelProviders
-import android.opengl.Visibility
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +29,11 @@ import kotlinx.android.synthetic.main.logs_fragment.view.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.util.*
+import android.R.attr.startYear
+import android.app.DatePickerDialog
+import android.support.v7.widget.AppCompatImageButton
+import android.widget.Button
+import android.widget.Toast
 
 
 //TODO: Move strings to strings resources
@@ -41,6 +44,8 @@ class LogsActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.logs_activity)
+		supportActionBar?.setDisplayHomeAsUpEnabled(true)
+		supportActionBar?.setDisplayShowTitleEnabled(true)
 		val model = ViewModelProviders.of(this).get(LogsViewModel::class.java)
 		//TODO: Figure out if there is a way to default the value to null
 		val vehicleId = intent.getIntExtra(VEHICLE_ID, -1)
@@ -70,14 +75,17 @@ class LogsActivity : AppCompatActivity() {
 			when (it.itemId) {
 				R.id.navigation_gas -> {
 					viewSwitcher.currentItem = 0
+					title = "Gas Logs"
 					true
 				}
 				R.id.navigation_oil -> {
 					viewSwitcher.currentItem = 1
+					title = "Oil Logs"
 					true
 				}
 				R.id.navigation_coolant -> {
 					viewSwitcher.currentItem = 2
+					title = "Coolant Logs"
 					true
 				}
 				else -> false
@@ -112,6 +120,10 @@ class LogsActivity : AppCompatActivity() {
 		override fun getDialogCustomView(): View {
 			val dialogView = layoutInflater.inflate(R.layout.set_level_dialog_fragment, null)
 			dialogView.level_indicator_layout.level_indicator.progress = frameView.level_indicator.progress
+			dialogView.save_date_text_view.text = Calendar.getInstance().time.toString()
+			dialogView.edit_image_view.setOnClickListener {
+				dialogView.info_date_picker_view_switcher.showNext()
+			}
 			return dialogView
 		}
 
@@ -163,6 +175,10 @@ class LogsActivity : AppCompatActivity() {
 		override fun getDialogCustomView(): View {
 			val dialogView = layoutInflater.inflate(R.layout.set_level_dialog_fragment, null)
 			dialogView.level_indicator_layout.level_indicator.progress = frameView.level_indicator.progress
+			dialogView.save_date_text_view.text = Calendar.getInstance().time.toString()
+			dialogView.edit_image_view.setOnClickListener {
+				dialogView.info_date_picker_view_switcher.showNext()
+			}
 			return dialogView
 		}
 
@@ -214,7 +230,14 @@ class LogsActivity : AppCompatActivity() {
 
 		override fun getAdapter() = adapter
 
-		override fun getDialogCustomView(): View = layoutInflater.inflate(R.layout.gas_entry_dialog_fragment, null)
+		override fun getDialogCustomView(): View {
+			val view = layoutInflater.inflate(R.layout.gas_entry_dialog_fragment, null)
+			view.date_edit_text_gas.text = Calendar.getInstance().time.toString()
+			view.edit_date_image_view.setOnClickListener {
+				view.gas_dialog_view_switcher.showNext()
+			}
+			return view
+		}
 
 		//TODO: figure out safer way to conver toInt and toDouble
 		override fun onSaveClicked(customView: View) {
