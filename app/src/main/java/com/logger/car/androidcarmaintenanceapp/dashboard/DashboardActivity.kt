@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.dashboard_cardview.view.*
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -67,7 +68,7 @@ class DashboardActivity : AppCompatActivity() {
 						coolant_button.isSelected = false
 						button.isSelected = true
 						detail_layout.visibility = View.VISIBLE
-						info_text.text = logList?.firstOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${it.mileage} miles." } ?: "No logs for selected item."
+						info_text.text = logList?.firstOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${NumberFormat.getNumberInstance(Locale.US).format(it.mileage)} miles." } ?: "No logs for selected item."
 
 						view_logs_button.setOnClickListener {
 							startActivity(
