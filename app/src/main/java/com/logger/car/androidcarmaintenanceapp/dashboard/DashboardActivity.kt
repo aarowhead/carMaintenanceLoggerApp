@@ -33,21 +33,22 @@ class DashboardActivity : AppCompatActivity() {
 		const val MAINTENANCE_TYPE = "MAINTENANCE_TYPE"
 		const val VEHICLE_ID = "VEHICLE_ID"
 	}
+
+	private val vehicleAdapter = VehicleAdapter(mutableListOf())
 	private lateinit var model: DashboardViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.dashboard_activity)
 		model = ViewModelProviders.of(this@DashboardActivity).get(DashboardViewModel::class.java)
-		val adapter = VehicleAdapter(mutableListOf())
 
 		cars_recycler.run {
-			this.adapter = adapter
+			this.adapter = vehicleAdapter
 			layoutManager = LinearLayoutManager(this@DashboardActivity)
 		}
 		model.getObservableVehicles().observe(this, Observer {
-			adapter.vehicles = it
-			adapter.notifyDataSetChanged()
+			vehicleAdapter.vehicles = it
+			vehicleAdapter.notifyDataSetChanged()
 		})
 	}
 
@@ -66,16 +67,18 @@ class DashboardActivity : AppCompatActivity() {
 						coolant_button.isSelected = false
 						button.isSelected = true
 						detail_layout.visibility = View.VISIBLE
-						info_text.text = logList?.lastOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${it.mileage} miles." } ?: "No logs for selected item."
+						info_text.text = logList?.firstOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${it.mileage} miles." } ?: "No logs for selected item."
 
-						view_logs_button.setOnClickListener { startActivity(
-								Intent(this@DashboardActivity, LogsActivity::class.java).apply {
-									putExtra(VEHICLE_ID, vehicle.id)
-									putExtra(MAINTENANCE_TYPE, type)
-								}
-						) }
+						view_logs_button.setOnClickListener {
+							startActivity(
+									Intent(this@DashboardActivity, LogsActivity::class.java).apply {
+										putExtra(VEHICLE_ID, vehicle.id)
+										putExtra(MAINTENANCE_TYPE, type)
+									}
+							)
+						}
 						add_entry_button.setOnClickListener {
-							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if(type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
+							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
 								//TODO: figure out a smart way for it to set the progress
 								level_indicator.progress = 50
 							}) {
@@ -134,7 +137,15 @@ class DashboardActivity : AppCompatActivity() {
 					detail_layout.visibility = View.GONE
 					car_name.text = "${vehicle.make} ${vehicle.model}"
 					status.text = "Testing"
-					checkup_button.setOnClickListener { CheckupMainFragment().show(supportFragmentManager, "TAG") }
+					checkup_button.setOnClickListener { _ ->
+						CheckupMainFragment.newInstance(vehicle.id).apply {
+							onFinishedCallback = object : CheckupMainFragment.OnCheckupFinishedListener {
+								override fun onFinished(vehicleId: Int) {
+									vehicleAdapter.vehicles?.indexOfFirst { it.id == vehicleId }?.let { vehicleAdapter.notifyItemChanged(it) }
+								}
+							}
+						}.show(supportFragmentManager, "TAG")
+					}
 					gas_button.run {
 						text = "18.1 MPG"
 						setOnClickListener {
@@ -144,8 +155,9 @@ class DashboardActivity : AppCompatActivity() {
 						}
 //						TODO("Figure out how to calculate mileage")
 					}
+
 					oil_button.run {
-						vehicle.oilLogs.value?.lastOrNull()?.level?.let { oilLevel ->
+						vehicle.oilLogs.value?.firstOrNull()?.level?.let { oilLevel ->
 							text = "$oilLevel%"
 							background = getButtonStyleFromLevel(oilLevel)
 						} ?: run {
@@ -155,7 +167,7 @@ class DashboardActivity : AppCompatActivity() {
 						setOnClickListener { if (!isSelected) displayDetailLayout(this, vehicle.oilLogs.value as List<BaseLogEntry>?, MaintenanceType.OIL) else hideDetailLayout(this) }
 					}
 					coolant_button.run {
-						vehicle.coolantLogs.value?.lastOrNull()?.level?.let { coolantLevel ->
+						vehicle.coolantLogs.value?.firstOrNull()?.level?.let { coolantLevel ->
 							text = "$coolantLevel%"
 							background = getButtonStyleFromLevel(coolantLevel)
 						} ?: run {

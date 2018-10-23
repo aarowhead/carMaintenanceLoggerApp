@@ -1,6 +1,5 @@
 package com.logger.car.androidcarmaintenanceapp.repository
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
