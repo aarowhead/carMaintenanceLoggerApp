@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.logger.car.androidcarmaintenanceapp.R
@@ -21,7 +20,6 @@ class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
 	override fun getLayout() = R.layout.checkup_gas_fragment
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = super.onCreateView(inflater, container, savedInstanceState)?.apply {
-		back_button.visibility = View.GONE
 		gallons_added_edit_text.addListener {
 			logEntry.gallonsAdded = it?.toString()?.toDoubleOrNull()
 			proceed_button.isEnabled = logEntry.isValidLogEntry()

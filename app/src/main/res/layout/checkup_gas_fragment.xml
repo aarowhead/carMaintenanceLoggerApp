@@ -69,8 +69,10 @@
 
 	<android.support.v7.widget.AppCompatButton
 		android:id="@+id/back_button"
+		style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:enabled="false"
 		android:text="Back"
 		app:layout_constraintEnd_toStartOf="@+id/cancel_button"
 		app:layout_constraintHorizontal_bias="0.5"
@@ -79,6 +81,7 @@
 
 	<android.support.v7.widget.AppCompatButton
 		android:id="@+id/cancel_button"
+		style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:text="Cancel"
@@ -89,10 +92,11 @@
 
 	<android.support.v7.widget.AppCompatButton
 		android:id="@+id/proceed_button"
+		style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:text="Next"
 		android:enabled="false"
+		android:text="Next"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toEndOf="@+id/cancel_button"
