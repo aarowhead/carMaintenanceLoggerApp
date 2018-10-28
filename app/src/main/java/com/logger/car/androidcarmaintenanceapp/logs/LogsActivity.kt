@@ -44,6 +44,12 @@ class LogsActivity : AppCompatActivity() {
 				bottomNavigation.menu.apply {
 					findItem(bottomNavigation.selectedItemId).isChecked = false
 					getItem(position).isChecked = true
+					//TODO: see if this should be done with an enum or something
+					when (position) {
+						0 -> title = "Gas Logs"
+						1 -> title = "Oil Logs"
+						2 -> title = "Coolant Logs"
+					}
 				}
 			}
 		})

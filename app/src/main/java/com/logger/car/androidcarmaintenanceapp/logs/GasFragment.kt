@@ -42,12 +42,12 @@ class GasFragment: LogsFragment() {
 
 	override fun getDialogCustomView(): View {
 		val view = layoutInflater.inflate(R.layout.gas_entry_dialog_fragment, null)
-		view.date_edit_text_gas.text = Calendar.getInstance().time.toString()
+		view.date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
 		Calendar.getInstance().run {
-			view.edit_date_image_view.setOnClickListener {
+			view.date_edit_text_gas.setOnClickListener {
 				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
-						view.date_edit_text_gas.text = sdf.format(it)
+						view.date_edit_text_gas.setText(sdf.format(it))
 					}
 				}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
 			}
@@ -58,7 +58,7 @@ class GasFragment: LogsFragment() {
 	//TODO: figure out safer way to conver toInt and toDouble
 	override fun onSaveClicked(customView: View) {
 		val newEntry = GasLogEntry(
-				Calendar.getInstance().time,
+				sdf.parse(customView.date_edit_text_gas.text.toString()),
 				customView.mileage_edit_text_gas.text.toString().toInt(),
 				customView.gallons_added_edit_text.text.toString().toDouble())
 

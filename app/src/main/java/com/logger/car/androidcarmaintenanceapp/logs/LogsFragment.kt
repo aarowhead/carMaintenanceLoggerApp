@@ -21,7 +21,7 @@ import java.util.*
 abstract class LogsFragment : Fragment() {
 
 	var model: LogsViewModel? = null
-	protected val sdf = SimpleDateFormat("MMMM dd, YYYY", Locale.US)
+	protected val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 	//TODO: Should this be protected?
 	lateinit var frameView: View
 
@@ -45,6 +45,7 @@ abstract class LogsFragment : Fragment() {
 	open fun getIndicatorLayout(): View {
 		val view = layoutInflater.inflate(R.layout.level_indicator_layout, null)
 		view.level_indicator.isEnabled = false
+		view.level_indicator.thumb = null
 		return view
 	}
 

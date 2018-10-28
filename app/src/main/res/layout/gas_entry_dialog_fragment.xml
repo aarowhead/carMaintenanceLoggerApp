@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-a"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,6 +11,8 @@
         android:id="@+id/gallons_added_edit_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:hint="Gallons Added"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,28 +23,27 @@
         android:id="@+id/mileage_edit_text_gas"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:hint="Mileage"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gallons_added_edit_text" />
 
-    <TextView
+<!--TODO: see if there is a more graceful way to handle this edit text-->
+    <EditText
         android:id="@+id/date_edit_text_gas"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:focusable="false"
+        android:clickable="true"
+        android:inputType="none"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mileage_edit_text_gas"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <ImageView
-        android:id="@+id/edit_date_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit_black_24dp"
-        app:layout_constraintTop_toTopOf="@+id/date_edit_text_gas"
-        app:layout_constraintBottom_toBottomOf="@+id/date_edit_text_gas"
-        app:layout_constraintStart_toEndOf="@id/date_edit_text_gas"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mileage_edit_text_gas"
+        tools:text="May 15, 2018" />
 
 </android.support.constraint.ConstraintLayout>
