@@ -21,7 +21,7 @@ import java.util.*
 abstract class LogsFragment : Fragment() {
 
 	var model: LogsViewModel? = null
-	protected val sdf = SimpleDateFormat("MM/dd/yy", Locale.US)
+	protected val sdf = SimpleDateFormat("MMMM dd, YYYY", Locale.US)
 	//TODO: Should this be protected?
 	lateinit var frameView: View
 

@@ -11,8 +11,8 @@ import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
 import com.logger.car.androidcarmaintenanceapp.getMonthName
-import kotlinx.android.synthetic.main.gas_log_entry.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.log_date_layout.view.*
 import kotlinx.android.synthetic.main.log_entry.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
@@ -80,11 +80,11 @@ abstract class MotorFluidsFragment : LogsFragment() {
 			entries[position].let {
 				holder.itemView.historic_level_indicator.progress = it.level ?: 0
 				it.entryDate?.let { date ->
-					holder.itemView.month.text = date.getMonthName()
-					holder.itemView.day.text = date.getDayOfMonth().toString()
+					holder.itemView.log_date_layout.month.text = date.getMonthName()
+					holder.itemView.log_date_layout.day.text = date.getDayOfMonth().toString()
 				}
 				holder.itemView.mileage.text = NumberFormat.getNumberInstance(Locale.US).format(it.mileage) + " miles"
-				holder.itemView.percentage_indicator.text = it.level.toString() + "%"
+				holder.itemView.fluid_amount_text_indicator.text = it.level.toString() + "%"
 			}
 		}
 	}
