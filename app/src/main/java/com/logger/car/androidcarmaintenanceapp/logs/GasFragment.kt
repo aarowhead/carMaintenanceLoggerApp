@@ -1,16 +1,20 @@
 package com.logger.car.androidcarmaintenanceapp.logs
 
+import android.app.DatePickerDialog
 import android.arch.lifecycle.MutableLiveData
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
+import kotlinx.android.synthetic.main.gas_log_entry.*
 import kotlinx.android.synthetic.main.gas_log_entry.view.*
 import kotlinx.android.synthetic.main.gas_mileage_indicator.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
+import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.util.*
 
 class GasFragment: LogsFragment() {
@@ -37,8 +41,14 @@ class GasFragment: LogsFragment() {
 	override fun getDialogCustomView(): View {
 		val view = layoutInflater.inflate(R.layout.gas_entry_dialog_fragment, null)
 		view.date_edit_text_gas.text = Calendar.getInstance().time.toString()
-		view.edit_date_image_view.setOnClickListener {
-			view.gas_dialog_view_switcher.showNext()
+		Calendar.getInstance().run {
+			view.edit_date_image_view.setOnClickListener {
+				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
+						date_text_view.text = sdf.format(it)
+					}
+				}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
+			}
 		}
 		return view
 	}
@@ -49,8 +59,15 @@ class GasFragment: LogsFragment() {
 				Calendar.getInstance().time,
 				customView.mileage_edit_text_gas.text.toString().toInt(),
 				customView.gallons_added_edit_text.text.toString().toDouble())
-		//TODO: figure out how to do safer indexing for when there is no 0 index?
-		gasLogs?.let { it.value = it.value.also { it?.add(0, newEntry) } }
+
+		if (newEntry.isValidLogEntry()) {
+			//TODO: figure out how to do safer indexing for when there is no 0 index?
+			gasLogs?.let { it.value = it.value.also { it?.add(0, newEntry) } }
+			Toast.makeText(context, "Entry Saved", Toast.LENGTH_LONG).show()
+		} else {
+			//TODO: Think about showing this in a dialog
+			Toast.makeText(context, "Unable to save entry due to missing data.", Toast.LENGTH_LONG).show()
+		}
 	}
 
 	inner class GasAdapter : LogAdapter<GasLogEntry>() {

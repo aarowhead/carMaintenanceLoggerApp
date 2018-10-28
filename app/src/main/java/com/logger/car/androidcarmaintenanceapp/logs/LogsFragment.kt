@@ -14,12 +14,14 @@ import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_recycler_view.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 //TODO: Major cleanup needed on this
 abstract class LogsFragment : Fragment() {
 
 	var model: LogsViewModel? = null
+	protected val sdf = SimpleDateFormat("MM/dd/yy", Locale.US)
 	//TODO: Should this be protected?
 	lateinit var frameView: View
 

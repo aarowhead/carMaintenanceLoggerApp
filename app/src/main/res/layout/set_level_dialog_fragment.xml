@@ -1,56 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewSwitcher
+
+<android.support.constraint.ConstraintLayout android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/info_date_picker_view_switcher"
-    android:layout_gravity="center">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.constraint.ConstraintLayout
+    <include
+        android:id="@+id/level_indicator_layout"
+        android:layout_height="250dp"
+        android:layout_width="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        layout="@layout/level_indicator_layout" />
+
+    <EditText
+        android:hint="Mileage"
+        android:id="@+id/mileage_edit_text"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/level_indicator_layout" />
+
+    <TextView
+        android:id="@+id/save_date_text_view"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mileage_edit_text"
+        tools:text="May 22, 2018" />
 
-        <include layout="@layout/level_indicator_layout"
-            android:id="@+id/level_indicator_layout"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <EditText
-            android:id="@+id/mileage_edit_text"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="Mileage"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/level_indicator_layout"/>
-
-        <TextView
-            android:id="@+id/save_date_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/mileage_edit_text"
-            tools:text="May 22, 2018"/>
-
-        <ImageView
-            android:id="@+id/edit_image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_edit_black_24dp"
-            app:layout_constraintTop_toTopOf="@id/save_date_text_view"
-            app:layout_constraintBottom_toBottomOf="@id/save_date_text_view"
-            app:layout_constraintStart_toEndOf="@id/save_date_text_view"/>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <DatePicker
+    <ImageView
+        android:id="@+id/edit_image_view"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_edit_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/save_date_text_view"
+        app:layout_constraintStart_toEndOf="@id/save_date_text_view"
+        app:layout_constraintTop_toTopOf="@id/save_date_text_view" />
 
-</ViewSwitcher>
+</android.support.constraint.ConstraintLayout>
