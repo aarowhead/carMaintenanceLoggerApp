@@ -22,7 +22,8 @@ class VehicleRepository private constructor() {
 				Vehicle(
 						1,
 						"Honda",
-						"Accord"
+						"Accord",
+						17
 				).apply {
 					oilLogs.value = mutableListOf(
 							FluidLogEntry(dateFormat.parse("06/10/2018"), 127000, 80),
@@ -44,12 +45,13 @@ class VehicleRepository private constructor() {
 							FluidLogEntry(dateFormat.parse("20/09/2018"), 126000, 55),
 							FluidLogEntry(dateFormat.parse("06/09/2018"), 125200, 30)
 					)
-					gasLogs.value = mutableListOf(GasLogEntry(Calendar.getInstance().time, 127000, 13.0))
+					gasLogs.value = mutableListOf(GasLogEntry(dateFormat.parse("06/10/2018"), 127000, 13.0))
 				},
 				Vehicle(
 						2,
 						"Toyota",
-						"Camry"
+						"Camry",
+						14
 				)
 		)
 	}

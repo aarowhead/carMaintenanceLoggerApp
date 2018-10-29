@@ -1,7 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mpg_indicator"
-    android:textSize="38sp"
-    android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/indicator_outer_ring"
+        android:src="@drawable/miles_per_gallon_indicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/indicator_outer_ring"
+        app:layout_constraintEnd_toEndOf="@id/indicator_outer_ring"
+        app:layout_constraintTop_toTopOf="@id/indicator_outer_ring"
+        app:layout_constraintBottom_toBottomOf="@id/indicator_outer_ring">
+
+        <TextView
+            android:id="@+id/mpg_indicator_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="62sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="24" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingStart="8dp"
+            android:text="MPG"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@id/mpg_indicator_text_view"
+            app:layout_constraintStart_toEndOf="@id/mpg_indicator_text_view" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

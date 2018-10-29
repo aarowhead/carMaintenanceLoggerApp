@@ -7,7 +7,8 @@ data class Vehicle(
 		val id: Int,
         val make: String,
         val model: String,
-        val oilLogs: MutableLiveData<MutableList<FluidLogEntry>> = MutableLiveData(),
+		val tankSize: Int,
+		val oilLogs: MutableLiveData<MutableList<FluidLogEntry>> = MutableLiveData(),
         val coolantLogs: MutableLiveData<MutableList<FluidLogEntry>> = MutableLiveData(),
         val gasLogs: MutableLiveData<MutableList<GasLogEntry>> = MutableLiveData()
 )
