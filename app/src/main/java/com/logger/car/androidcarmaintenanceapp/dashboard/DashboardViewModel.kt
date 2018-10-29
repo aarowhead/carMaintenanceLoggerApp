@@ -8,6 +8,9 @@ import com.logger.car.androidcarmaintenanceapp.repository.VehicleRepository
 class DashboardViewModel: ViewModel() {
 
 	private val vehicleRepository = VehicleRepository.instance
+	var pendingGasEntry: GasLogEntry? = null
+	var pendingOilEntry: FluidLogEntry? = null
+	var pendingCoolantEntry: FluidLogEntry? = null
 
 	fun getObservableVehicles() = vehicleRepository.vehicles
 

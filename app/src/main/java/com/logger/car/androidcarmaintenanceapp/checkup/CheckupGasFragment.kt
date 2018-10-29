@@ -9,36 +9,45 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
+import kotlinx.android.synthetic.main.checkup_gas_fragment.*
 import kotlinx.android.synthetic.main.checkup_gas_fragment.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
-	override var logEntry = GasLogEntry()
 	private val sdf = SimpleDateFormat("MM/dd/yy", Locale.US)
 
 	override fun getLayout() = R.layout.checkup_gas_fragment
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = super.onCreateView(inflater, container, savedInstanceState)?.apply {
+		model.pendingGasEntry?.let {
+			gallons_added_edit_text.setText(it.gallonsAdded.toString())
+			mileage_edit_text.setText(it.mileage.toString())
+			date_edit_text.setText(sdf.format(it.entryDate))
+		} ?: run { model.pendingGasEntry = GasLogEntry() }
 		gallons_added_edit_text.addListener {
-			logEntry.gallonsAdded = it?.toString()?.toDoubleOrNull()
-			proceed_button.isEnabled = logEntry.isValidLogEntry()
+			model.pendingGasEntry?.gallonsAdded = it?.toString()?.toDoubleOrNull()
+			enableProceedButtonIfReady()
 		}
 		mileage_edit_text.addListener {
-			logEntry.mileage = it?.toString()?.toIntOrNull()
-			proceed_button.isEnabled = logEntry.isValidLogEntry()
+			model.pendingGasEntry?.mileage = it?.toString()?.toIntOrNull()
+			enableProceedButtonIfReady()
 		}
 		Calendar.getInstance().run {
 			date_edit_text.setOnClickListener {
 				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
-						logEntry.entryDate = it
-						date_edit_text.setText(sdf.format(it))
+					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let { date ->
+						model.pendingGasEntry?.entryDate = date
+						date_edit_text.setText(sdf.format(date))
 					}
-					proceed_button.isEnabled = logEntry.isValidLogEntry() == true
+					enableProceedButtonIfReady()
 				}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
 			}
 		}
+	}
+
+	private fun enableProceedButtonIfReady() {
+		proceed_button.isEnabled = model.pendingGasEntry?.isValidLogEntry() == true
 	}
 
 	private fun EditText.addListener(action: (text: Editable?) -> Unit) {
