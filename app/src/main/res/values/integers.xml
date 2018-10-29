@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<integer name="critical_threshold">15</integer>
+	<integer name="warning_threshold">35</integer>
+</resources>

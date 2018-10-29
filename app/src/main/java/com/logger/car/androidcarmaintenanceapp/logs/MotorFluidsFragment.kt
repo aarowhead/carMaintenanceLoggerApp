@@ -6,15 +6,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.Toast
 import com.logger.car.androidcarmaintenanceapp.R
+import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
 import com.logger.car.androidcarmaintenanceapp.getMonthName
+import kotlinx.android.synthetic.main.level_indicator_layout.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_date_layout.view.*
 import kotlinx.android.synthetic.main.log_entry.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
+import kotlinx.android.synthetic.main.set_level_dialog_fragment.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.util.*
@@ -57,6 +61,17 @@ abstract class MotorFluidsFragment : LogsFragment() {
 	override fun getDialogCustomView(): View {
 		val dialogView = layoutInflater.inflate(R.layout.set_level_dialog_fragment, null)
 		dialogView.level_indicator_layout.level_indicator.progress = frameView.level_indicator.progress
+		dialogView.level_indicator_layout.level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+			override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
+				DashboardActivity.setLevelText(requireContext(), progress, level_text)
+			}
+
+			override fun onStartTrackingTouch(p0: SeekBar?) {
+			}
+
+			override fun onStopTrackingTouch(p0: SeekBar?) {
+			}
+		})
 		dialogView.save_date_text_view.text = Calendar.getInstance().time.toString()
 		Calendar.getInstance().run {
 			dialogView.edit_image_view.setOnClickListener {
@@ -67,6 +82,7 @@ abstract class MotorFluidsFragment : LogsFragment() {
 				}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
 			}
 		}
+		DashboardActivity.setLevelText(requireContext(), level_indicator.progress, dialogView.level_text)
 		return dialogView
 	}
 

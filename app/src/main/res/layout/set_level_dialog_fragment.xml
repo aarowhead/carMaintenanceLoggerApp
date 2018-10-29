@@ -1,45 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+											 xmlns:app="http://schemas.android.com/apk/res-auto"
+											 xmlns:tools="http://schemas.android.com/tools"
+											 android:layout_width="wrap_content"
+											 android:layout_height="wrap_content">
 
-    <include
-        android:id="@+id/level_indicator_layout"
-        android:layout_height="250dp"
-        android:layout_width="250dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        layout="@layout/level_indicator_layout" />
+	<include
+		android:id="@+id/level_indicator_layout"
+		layout="@layout/level_indicator_layout"
+		android:layout_width="250dp"
+		android:layout_height="250dp"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:hint="Mileage"
-        android:id="@+id/mileage_edit_text"
-        android:inputType="number"
-        android:layout_height="wrap_content"
-        android:layout_width="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/level_indicator_layout" />
+	<android.support.v7.widget.AppCompatTextView
+		android:id="@+id/level_text_label"
+		style="@style/Base.TextAppearance.AppCompat.Large"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Current Level:"
+		android:textStyle="bold"
+		app:layout_constraintBottom_toBottomOf="@id/level_text"
+		app:layout_constraintStart_toStartOf="@id/level_indicator_layout"
+		app:layout_constraintTop_toTopOf="@id/level_text" />
 
-    <TextView
-        android:id="@+id/save_date_text_view"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/mileage_edit_text"
-        tools:text="May 22, 2018" />
+	<android.support.v7.widget.AppCompatTextView
+		android:id="@+id/level_text"
+		style="@style/Base.TextAppearance.AppCompat.Large"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:textSize="48sp"
+		android:textStyle="bold"
+		app:layout_constraintEnd_toEndOf="@id/level_indicator_layout"
+		app:layout_constraintStart_toEndOf="@id/level_text_label"
+		app:layout_constraintTop_toBottomOf="@id/level_indicator_layout"
+		tools:text="50%" />
 
-    <ImageView
-        android:id="@+id/edit_image_view"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:src="@drawable/ic_edit_black_24dp"
-        app:layout_constraintBottom_toBottomOf="@id/save_date_text_view"
-        app:layout_constraintStart_toEndOf="@id/save_date_text_view"
-        app:layout_constraintTop_toTopOf="@id/save_date_text_view" />
+	<EditText
+		android:id="@+id/mileage_edit_text"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="8dp"
+		android:hint="Mileage"
+		android:inputType="number"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/level_text" />
+
+	<TextView
+		android:id="@+id/save_date_text_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/mileage_edit_text"
+		tools:text="May 22, 2018" />
+
+	<ImageView
+		android:id="@+id/edit_image_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_edit_black_24dp"
+		app:layout_constraintBottom_toBottomOf="@id/save_date_text_view"
+		app:layout_constraintStart_toEndOf="@id/save_date_text_view"
+		app:layout_constraintTop_toTopOf="@id/save_date_text_view" />
 
 </android.support.constraint.ConstraintLayout>

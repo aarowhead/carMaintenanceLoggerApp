@@ -2,8 +2,10 @@ package com.logger.car.androidcarmaintenanceapp.dashboard
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
@@ -11,6 +13,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.TextView
 import android.widget.Toast
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.checkup.CheckupMainFragment
@@ -28,11 +32,20 @@ import java.util.*
 
 class DashboardActivity : AppCompatActivity() {
 	companion object {
-		private const val CRITICAL_THRESHOLD = 15
-		private const val WARNING_THRESHOLD = 35
 		//TODO: See if this should be stored somewhere else
 		const val MAINTENANCE_TYPE = "MAINTENANCE_TYPE"
 		const val VEHICLE_ID = "VEHICLE_ID"
+
+		fun setLevelText(context: Context, percentage: Int, textView: TextView) {
+			textView.text = "$percentage%"
+			context.resources.run {
+				textView.setTextColor(ContextCompat.getColor(context, when {
+					percentage <= getInteger(R.integer.critical_threshold) -> R.color.critical
+					percentage <= getInteger(R.integer.warning_threshold) -> R.color.warning
+					else -> R.color.good
+				}))
+			}
+		}
 	}
 
 	private val vehicleAdapter = VehicleAdapter(mutableListOf())
@@ -52,7 +65,6 @@ class DashboardActivity : AppCompatActivity() {
 			vehicleAdapter.notifyDataSetChanged()
 		})
 	}
-
 	inner class VehicleAdapter(var vehicles: List<Vehicle>?) : RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 		override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
 				VehicleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dashboard_cardview, parent, false))
@@ -79,9 +91,21 @@ class DashboardActivity : AppCompatActivity() {
 							)
 						}
 						add_entry_button.setOnClickListener {
+							//TODO: figure out a smart way for it to set the progress
 							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
-								//TODO: figure out a smart way for it to set the progress
 								level_indicator.progress = 50
+								level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+									override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
+										setLevelText(this@DashboardActivity, progress, level_text)
+									}
+
+									override fun onStartTrackingTouch(p0: SeekBar?) {
+									}
+
+									override fun onStopTrackingTouch(p0: SeekBar?) {
+									}
+								})
+								setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
 							}) {
 								when (type) {
 									MaintenanceType.GAS -> {
@@ -130,8 +154,8 @@ class DashboardActivity : AppCompatActivity() {
 
 					fun getButtonStyleFromLevel(level: Int? = null) = getDrawable(when {
 						level == null -> R.drawable.good_button
-						level <= CRITICAL_THRESHOLD -> R.drawable.critical_button
-						level <= WARNING_THRESHOLD -> R.drawable.warning_button
+						level <= resources.getInteger(R.integer.critical_threshold) -> R.drawable.critical_button
+						level <= resources.getInteger(R.integer.warning_threshold) -> R.drawable.warning_button
 						else -> R.drawable.good_button
 					})
 
@@ -185,6 +209,7 @@ class DashboardActivity : AppCompatActivity() {
 
 		inner class VehicleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 	}
+
 }
 
 
