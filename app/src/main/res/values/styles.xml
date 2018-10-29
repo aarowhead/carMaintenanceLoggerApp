@@ -8,6 +8,12 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="AppTheme.AlertDialog" parent="Base.V21.ThemeOverlay.AppCompat.Dialog">
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+	</style>
+
 	<style name="RoundButton" parent="Widget.AppCompat.Button">
 		<item name="android:background">@drawable/rounded_button</item>
 		<item name="android:clickable">true</item>

@@ -35,7 +35,7 @@ class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
 		}
 		Calendar.getInstance().run {
 			date_edit_text.setOnClickListener {
-				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+				DatePickerDialog(requireContext(), R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let { date ->
 						model.getPendingGasEntry()?.entryDate = date
 						date_edit_text.setText(sdf.format(date))

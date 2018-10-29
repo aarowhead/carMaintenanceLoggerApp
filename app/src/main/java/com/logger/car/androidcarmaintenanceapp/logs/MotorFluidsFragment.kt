@@ -60,7 +60,7 @@ abstract class MotorFluidsFragment : LogsFragment() {
 		dialogView.save_date_text_view.text = Calendar.getInstance().time.toString()
 		Calendar.getInstance().run {
 			dialogView.edit_image_view.setOnClickListener {
-				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+				DatePickerDialog(requireContext(), R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
 						dialogView.save_date_text_view.text = sdf.format(it)
 					}

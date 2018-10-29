@@ -45,7 +45,7 @@ class GasFragment: LogsFragment() {
 		view.date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
 		Calendar.getInstance().run {
 			view.date_edit_text_gas.setOnClickListener {
-				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+				DatePickerDialog(requireContext(), R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
 						view.date_edit_text_gas.setText(sdf.format(it))
 					}
