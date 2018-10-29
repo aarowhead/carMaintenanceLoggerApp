@@ -36,6 +36,7 @@
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/checkup_button"
 				style="@style/RoundButton"
+				android:layout_width="wrap_content"
 				android:text="Update All"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +56,7 @@
 				style="@style/ColoredButton"
 				android:background="@drawable/good_button"
 				android:drawableStart="@drawable/icon_gas_white"
+				android:textSize="12sp"
 				app:layout_constraintEnd_toStartOf="@+id/oil_button"
 				app:layout_constraintHorizontal_bias="0.5"
 				app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -118,6 +120,7 @@
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/view_logs_button"
 				style="@style/RoundButton"
+				android:layout_width="wrap_content"
 				android:text="View Logs"
 				app:layout_constraintEnd_toStartOf="@+id/add_entry_button"
 				app:layout_constraintHorizontal_bias="0.5"
@@ -127,6 +130,7 @@
 			<android.support.v7.widget.AppCompatButton
 				android:id="@+id/add_entry_button"
 				style="@style/RoundButton"
+				android:layout_width="wrap_content"
 				android:text="Add Entry"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintHorizontal_bias="0.5"
