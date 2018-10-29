@@ -20,14 +20,14 @@ abstract class CheckupFragment<T : BaseLogEntry> : Fragment() {
 		val view = inflater.inflate(getLayout(), container, false)
 		view.findViewById<AppCompatButton>(R.id.back_button).setOnClickListener { callback?.onBackSelected() }
 		view.findViewById<AppCompatButton>(R.id.cancel_button).setOnClickListener { callback?.onCancelCheckup() }
-		view.findViewById<AppCompatButton>(R.id.proceed_button).setOnClickListener { logEntry.let { entry -> callback?.onProceedCheckup(entry) } }
+		view.findViewById<AppCompatButton>(R.id.proceed_button).setOnClickListener { callback?.onProceedCheckup() }
 		return view
 	}
 
 	abstract fun getLayout(): Int
 
 	interface CheckupCallback<T : BaseLogEntry> {
-		fun onProceedCheckup(entry: T)
+		fun onProceedCheckup()
 		fun onCancelCheckup()
 		fun onBackSelected()
 	}

@@ -20,24 +20,24 @@ class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
 	override fun getLayout() = R.layout.checkup_gas_fragment
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = super.onCreateView(inflater, container, savedInstanceState)?.apply {
-		model.pendingGasEntry?.let {
+		model.getPendingGasEntry()?.let {
 			gallons_added_edit_text.setText(it.gallonsAdded.toString())
 			mileage_edit_text.setText(it.mileage.toString())
 			date_edit_text.setText(sdf.format(it.entryDate))
-		} ?: run { model.pendingGasEntry = GasLogEntry() }
+		} ?: run { model.setPendingGasEntry(GasLogEntry()) }
 		gallons_added_edit_text.addListener {
-			model.pendingGasEntry?.gallonsAdded = it?.toString()?.toDoubleOrNull()
+			model.getPendingGasEntry()?.gallonsAdded = it?.toString()?.toDoubleOrNull()
 			enableProceedButtonIfReady()
 		}
 		mileage_edit_text.addListener {
-			model.pendingGasEntry?.mileage = it?.toString()?.toIntOrNull()
+			model.getPendingGasEntry()?.mileage = it?.toString()?.toIntOrNull()
 			enableProceedButtonIfReady()
 		}
 		Calendar.getInstance().run {
 			date_edit_text.setOnClickListener {
 				DatePickerDialog(requireContext(), DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let { date ->
-						model.pendingGasEntry?.entryDate = date
+						model.getPendingGasEntry()?.entryDate = date
 						date_edit_text.setText(sdf.format(date))
 					}
 					enableProceedButtonIfReady()
@@ -47,7 +47,7 @@ class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
 	}
 
 	private fun enableProceedButtonIfReady() {
-		proceed_button.isEnabled = model.pendingGasEntry?.isValidLogEntry() == true
+		proceed_button.isEnabled = model.getPendingGasEntry()?.isValidLogEntry() == true
 	}
 
 	private fun EditText.addListener(action: (text: Editable?) -> Unit) {

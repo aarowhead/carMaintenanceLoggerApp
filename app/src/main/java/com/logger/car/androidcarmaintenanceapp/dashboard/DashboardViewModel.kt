@@ -5,12 +5,9 @@ import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.domain.GasLogEntry
 import com.logger.car.androidcarmaintenanceapp.repository.VehicleRepository
 
-class DashboardViewModel: ViewModel() {
+class DashboardViewModel : ViewModel() {
 
 	private val vehicleRepository = VehicleRepository.instance
-	var pendingGasEntry: GasLogEntry? = null
-	var pendingOilEntry: FluidLogEntry? = null
-	var pendingCoolantEntry: FluidLogEntry? = null
 
 	fun getObservableVehicles() = vehicleRepository.vehicles
 
@@ -23,4 +20,37 @@ class DashboardViewModel: ViewModel() {
 
 	fun addGasEntry(vehicleId: Int, entry: GasLogEntry) =
 			vehicleRepository.getVehiclebyId(vehicleId)?.gasLogs?.value?.add(0, entry) ?: false
+
+	fun getPendingGasEntry() = vehicleRepository.pendingGasEntry
+
+	fun getPendingOilEntry() = vehicleRepository.pendingOilEntry
+
+	fun getPendingCoolantEntry() = vehicleRepository.pendingCoolantEntry
+
+	fun setPendingGasEntry(entry: GasLogEntry) {
+		vehicleRepository.pendingGasEntry = entry
+	}
+
+	fun setPendingOilEntry(entry: FluidLogEntry) {
+		vehicleRepository.pendingOilEntry = entry
+	}
+
+	fun setPendingCoolantEntry(entry: FluidLogEntry) {
+		vehicleRepository.pendingCoolantEntry = entry
+	}
+
+	fun addPendingEntries(vehicleId: Int) {
+		vehicleRepository.pendingGasEntry?.let {
+			addGasEntry(vehicleId, it)
+			vehicleRepository.pendingGasEntry = null
+		}
+		vehicleRepository.pendingOilEntry?.let {
+			addOilLogEntry(vehicleId, it)
+			vehicleRepository.pendingOilEntry = null
+		}
+		vehicleRepository.pendingCoolantEntry?.let {
+			addCoolantLogEntry(vehicleId, it)
+			vehicleRepository.pendingCoolantEntry = null
+		}
+	}
 }

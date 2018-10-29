@@ -16,6 +16,9 @@ class VehicleRepository private constructor() {
 	}
 
 	val vehicles = MutableLiveData<MutableList<Vehicle>>()
+	var pendingGasEntry: GasLogEntry? = null
+	var pendingOilEntry: FluidLogEntry? = null
+	var pendingCoolantEntry: FluidLogEntry? = null
 
 	init {
 		vehicles.value = mutableListOf(

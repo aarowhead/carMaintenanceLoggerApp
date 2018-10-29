@@ -8,33 +8,17 @@ import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import kotlinx.android.synthetic.main.checkup_oil_fragment.view.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
-import java.util.*
 
 class CheckupCoolantFragment : CheckupFragment<FluidLogEntry>() {
-	override var logEntry = FluidLogEntry()
-
-	companion object {
-		private const val DATE_ARG = "date"
-		private const val MILEAGE_ARG = "mileage"
-
-		fun newInstance(date: Date, mileage: Int) = CheckupCoolantFragment().apply {
-			arguments = Bundle().apply {
-				putLong(DATE_ARG, date.time)
-				putInt(MILEAGE_ARG, mileage)
-			}
-		}
-	}
-
 	override fun getLayout() = R.layout.checkup_coolant_fragment
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = super.onCreateView(inflater, container, savedInstanceState)?.apply {
-		arguments?.run {
-			logEntry.entryDate = Date().apply { time = getLong(DATE_ARG) }
-			logEntry.mileage = getInt(MILEAGE_ARG)
-		}
-		level_indicator_layout.level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+		model.getPendingCoolantEntry()?.run {
+			level_indicator_layout.level_indicator.progress = level ?: 0
+		} ?: run { model.getPendingGasEntry()?.let { model.setPendingCoolantEntry(FluidLogEntry(it.entryDate, it.mileage)) } }
+		level_indicator_layout.level_indicator.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 			override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
-				logEntry.level = progress
+				model.getPendingCoolantEntry()?.level = progress
 			}
 
 			override fun onStartTrackingTouch(p0: SeekBar?) {
