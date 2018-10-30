@@ -99,7 +99,7 @@ class DashboardActivity : AppCompatActivity() {
 						add_entry_button.setOnClickListener {
 							//TODO: figure out a smart way for it to set the progress
 							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
-								fun setUpMotorFluidLayout() {
+								fun setUpMotorFluidLayout(startingLevel: Int) {
 									date_edit_text_motor_fluid.setText(sdf.format(Calendar.getInstance().time))
 									Calendar.getInstance().apply {
 										date_edit_text_motor_fluid.setOnClickListener {
@@ -110,7 +110,7 @@ class DashboardActivity : AppCompatActivity() {
 											}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
 										}
 									}
-									level_indicator.progress = 50
+									level_indicator.progress = startingLevel
 									level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
 										override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
 											setLevelText(this@DashboardActivity, progress, level_text)
@@ -121,8 +121,8 @@ class DashboardActivity : AppCompatActivity() {
 									setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
 								}
 								when(type) {
-									MaintenanceType.OIL -> setUpMotorFluidLayout()
-									MaintenanceType.COOLANT -> setUpMotorFluidLayout()
+									MaintenanceType.OIL -> setUpMotorFluidLayout(vehicle.oilLogs.value?.first()?.level ?: 0)
+									MaintenanceType.COOLANT -> setUpMotorFluidLayout(vehicle.coolantLogs.value?.first()?.level ?: 0)
 									MaintenanceType.GAS -> {
 										date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
 										Calendar.getInstance().apply {

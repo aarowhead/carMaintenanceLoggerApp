@@ -1,8 +1,10 @@
 package com.logger.car.androidcarmaintenanceapp.checkup
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.SeekBar
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity
@@ -30,5 +32,6 @@ class CheckupOilFragment : CheckupFragment<FluidLogEntry>() {
 			}
 		})
 		DashboardActivity.setLevelText(requireContext(), level_indicator_layout.level_indicator.progress, level_text)
+		(activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(this.windowToken, 0)
 	}
 }
