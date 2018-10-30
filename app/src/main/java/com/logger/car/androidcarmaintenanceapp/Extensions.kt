@@ -15,10 +15,10 @@ fun Date.getMonthName(): String? {
 
 fun Date.getDayOfMonth() = Calendar.getInstance().apply { time = this@getDayOfMonth }.get(Calendar.DAY_OF_MONTH)
 
-fun Activity.showAddEntryDialog(customView: View, onSaveClicked: (view: View) -> Unit) {
+fun Activity.showAddEntryDialog(customView: View, fluidType: String, onSaveClicked: (view: View) -> Unit) {
     this.let {
         AlertDialog.Builder(it)
-                .setTitle("Add Entry")
+                .setTitle("Add $fluidType Entry")
                 .setView(customView)
                 .setPositiveButton("Save") { _, _ ->
                     onSaveClicked(customView)

@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_date_layout.view.*
 import kotlinx.android.synthetic.main.log_entry.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
-import kotlinx.android.synthetic.main.set_level_dialog_fragment.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.util.*
@@ -108,8 +107,12 @@ abstract class MotorFluidsFragment : LogsFragment() {
 
 class CoolantFragment : MotorFluidsFragment() {
 	override fun getFluidList() = model?.currentVehicle?.coolantLogs
+
+	override fun getFluidType() = "Coolant"
 }
 
 class OilFragment : MotorFluidsFragment() {
 	override fun getFluidList() = model?.currentVehicle?.oilLogs
+
+	override fun getFluidType() = "Oil"
 }

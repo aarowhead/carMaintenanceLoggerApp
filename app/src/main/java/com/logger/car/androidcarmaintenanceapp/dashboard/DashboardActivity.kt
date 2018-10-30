@@ -25,7 +25,6 @@ import com.logger.car.androidcarmaintenanceapp.showAddEntryDialog
 import kotlinx.android.synthetic.main.dashboard_activity.*
 import kotlinx.android.synthetic.main.dashboard_cardview.view.*
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
-import kotlinx.android.synthetic.main.gas_mileage_indicator.view.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.text.NumberFormat
@@ -98,7 +97,12 @@ class DashboardActivity : AppCompatActivity() {
 							)
 						}
 						add_entry_button.setOnClickListener {
-							//TODO: figure out a smart way for it to set the progress
+							// TODO Fix crashes when data isn't properly selected in the dialog
+							val fluidType = when {
+								gas_button.isSelected -> "Gas"
+								oil_button.isSelected -> "Oil"
+								else -> "Coolant"
+							}
 							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
 								fun setUpMotorFluidLayout(startingLevel: Int) {
 									date_edit_text_motor_fluid.setText(sdf.format(Calendar.getInstance().time))
@@ -137,7 +141,7 @@ class DashboardActivity : AppCompatActivity() {
 										}
 									}
 								}
-							}) {
+							}, fluidType) {
 								when (type) {
 									MaintenanceType.GAS -> {
 										model.addGasEntry(

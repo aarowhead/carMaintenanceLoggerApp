@@ -20,7 +20,7 @@
 		style="@style/Base.TextAppearance.AppCompat.Large"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Current Level:"
+		android:text="Selected Level:"
 		android:textStyle="bold"
 		app:layout_constraintStart_toStartOf="@id/level_indicator_layout"
 		app:layout_constraintTop_toTopOf="@id/level_text"

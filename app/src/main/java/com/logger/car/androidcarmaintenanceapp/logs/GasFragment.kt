@@ -55,6 +55,8 @@ class GasFragment: LogsFragment() {
 		return view
 	}
 
+	override fun getFluidType() = "Gas"
+
 	//TODO: figure out safer way to conver toInt and toDouble
 	override fun onSaveClicked(customView: View) {
 		val newEntry = GasLogEntry(

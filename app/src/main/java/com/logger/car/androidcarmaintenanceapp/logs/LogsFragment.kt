@@ -51,10 +51,12 @@ abstract class LogsFragment : Fragment() {
 
 	abstract fun getDialogCustomView(): View
 
+	abstract fun getFluidType(): String
+
 	private fun showAddEntryDialog(customView: View) {
 		activity?.let {
 			AlertDialog.Builder(it)
-					.setTitle("Add Entry")
+					.setTitle("Add ${getFluidType()} Entry")
 					.setView(customView)
 					.setPositiveButton("Save") { _, _ ->
 						onSaveClicked(customView)
