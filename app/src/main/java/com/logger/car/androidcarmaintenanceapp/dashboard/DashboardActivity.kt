@@ -229,9 +229,9 @@ class DashboardActivity : AppCompatActivity() {
 					}
 
 					oil_button.run {
-						vehicle.oilLogs.value?.firstOrNull()?.level?.let { oilLevel ->
+						model.getEstimatedOilLevel(vehicle.id)?.let { oilLevel ->
 							text = "$oilLevel%"
-							background = getButtonStyleFromLevel(oilLevel)
+							background = getButtonStyleFromLevel(oilLevel.toInt())
 						} ?: run {
 							text = "???"
 							background = getButtonStyleFromLevel()
@@ -242,9 +242,9 @@ class DashboardActivity : AppCompatActivity() {
 						} }
 					}
 					coolant_button.run {
-						vehicle.coolantLogs.value?.firstOrNull()?.level?.let { coolantLevel ->
+						model.getEstimatedCoolantLevel(vehicle.id)?.let { coolantLevel ->
 							text = "$coolantLevel%"
-							background = getButtonStyleFromLevel(coolantLevel)
+							background = getButtonStyleFromLevel(coolantLevel.toInt())
 						} ?: run {
 							text = "???"
 							background = getButtonStyleFromLevel()
