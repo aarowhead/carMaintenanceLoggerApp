@@ -39,37 +39,6 @@
 		app:layout_constraintEnd_toEndOf="@id/level_indicator_layout"
 		app:layout_constraintTop_toBottomOf="@id/level_indicator_layout" />
 
-	<android.support.v7.widget.AppCompatImageView
-		android:id="@+id/gas_icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/icon_gas_disabled"
-		app:layout_constraintEnd_toStartOf="@+id/oil_icon"
-		app:layout_constraintHorizontal_bias="0.5"
-		android:layout_marginTop="8dp"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/level_text" />
-
-	<android.support.v7.widget.AppCompatImageView
-		android:id="@+id/oil_icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/icon_oil_black"
-		app:layout_constraintEnd_toStartOf="@+id/coolant_icon"
-		app:layout_constraintHorizontal_bias="0.5"
-		app:layout_constraintStart_toEndOf="@+id/gas_icon"
-		app:layout_constraintTop_toTopOf="@id/gas_icon" />
-
-	<android.support.v7.widget.AppCompatImageView
-		android:id="@+id/coolant_icon"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/icon_coolant_disabled"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0.5"
-		app:layout_constraintStart_toEndOf="@+id/oil_icon"
-		app:layout_constraintTop_toTopOf="@id/gas_icon" />
-
 	<android.support.v7.widget.AppCompatButton
 		android:id="@+id/back_button"
 		style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
@@ -79,7 +48,7 @@
 		app:layout_constraintEnd_toStartOf="@+id/cancel_button"
 		app:layout_constraintHorizontal_bias="0.5"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/gas_icon" />
+		app:layout_constraintTop_toBottomOf="@id/level_text" />
 
 	<android.support.v7.widget.AppCompatButton
 		android:id="@+id/cancel_button"
