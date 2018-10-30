@@ -8,7 +8,7 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="colorRipple">#bfbfbf</color>
-    <color name="defaultButtonTextColor">#14A4CF</color>
+    <color name="fluidButtonOutline">#14A4CF</color>
     <color name="critical">#FF2900</color>
     <color name="criticalPressed">#80FF2900</color>
     <color name="warning">#FFA200</color>
