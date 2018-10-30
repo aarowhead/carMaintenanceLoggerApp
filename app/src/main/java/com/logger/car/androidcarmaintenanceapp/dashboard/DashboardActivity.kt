@@ -65,9 +65,12 @@ class DashboardActivity : AppCompatActivity() {
 		model.getObservableVehicles().observe(this, Observer {
 			vehicleAdapter.vehicles = it
 			vehicleAdapter.notifyDataSetChanged()
+			vehicleAdapter.selectedButtons = arrayOfNulls(it?.size ?: 0)
 		})
 	}
 	inner class VehicleAdapter(var vehicles: List<Vehicle>?) : RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
+		var selectedButtons: Array<MaintenanceType?>? = null
+
 		override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
 				VehicleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dashboard_cardview, parent, false))
 
@@ -81,6 +84,7 @@ class DashboardActivity : AppCompatActivity() {
 						oil_button.isSelected = false
 						coolant_button.isSelected = false
 						button.isSelected = true
+						selectedButtons?.set(position, type)
 						detail_layout.visibility = View.VISIBLE
 						info_text.text = logList?.firstOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${NumberFormat.getNumberInstance(Locale.US).format(it.mileage)} miles." } ?: "No logs for selected item."
 
@@ -169,6 +173,12 @@ class DashboardActivity : AppCompatActivity() {
 								}
 								//TODO: Change this to check boolean return to see if it was successfully added
 								Toast.makeText(context, "Log successfully added", Toast.LENGTH_LONG).show()
+								vehicleAdapter.vehicles?.indexOf(vehicle)?.let {
+									vehicleAdapter.notifyItemChanged(it)
+									button.isSelected = true
+									detail_layout.visibility = View.VISIBLE
+									info_text.text = logList?.firstOrNull()?.let { "${SimpleDateFormat("MMMM d").format(it.entryDate)} at ${NumberFormat.getNumberInstance(Locale.US).format(it.mileage)} miles." } ?: "No logs for selected item."
+								}
 							}
 						}
 					}
@@ -185,9 +195,17 @@ class DashboardActivity : AppCompatActivity() {
 						else -> R.drawable.good_button
 					})
 
-					detail_layout.visibility = View.GONE
 					car_name.text = "${vehicle.make} ${vehicle.model}"
 					status.text = "Testing"
+					if (position < selectedButtons?.size ?: 0) {
+						selectedButtons?.get(position)?.let {
+							when (it) {
+								MaintenanceType.GAS -> displayDetailLayout(gas_button, vehicle.gasLogs.value, it)
+								MaintenanceType.OIL -> displayDetailLayout(oil_button, vehicle.oilLogs.value, it)
+								else -> displayDetailLayout(coolant_button, vehicle.coolantLogs.value, it)
+							}
+						}
+					}
 					checkup_button.setOnClickListener { _ ->
 						CheckupMainFragment.newInstance(vehicle.id).apply {
 							onFinishedCallback = object : CheckupMainFragment.OnCheckupFinishedListener {
@@ -201,8 +219,11 @@ class DashboardActivity : AppCompatActivity() {
 						text = "18.1 MPG"
 						setOnClickListener {
 							if (!isSelected) {
-								displayDetailLayout(this, vehicle.gasLogs.value as List<BaseLogEntry>?, MaintenanceType.GAS)
-							} else hideDetailLayout(this)
+								displayDetailLayout(this, vehicle.gasLogs.value, MaintenanceType.GAS)
+							} else {
+								hideDetailLayout(this)
+								selectedButtons?.set(position, null)
+							}
 						}
 //						TODO("Figure out how to calculate mileage")
 					}
@@ -215,7 +236,10 @@ class DashboardActivity : AppCompatActivity() {
 							text = "???"
 							background = getButtonStyleFromLevel()
 						}
-						setOnClickListener { if (!isSelected) displayDetailLayout(this, vehicle.oilLogs.value as List<BaseLogEntry>?, MaintenanceType.OIL) else hideDetailLayout(this) }
+						setOnClickListener { if (!isSelected) displayDetailLayout(this, vehicle.oilLogs.value as List<BaseLogEntry>?, MaintenanceType.OIL) else {
+							hideDetailLayout(this)
+							selectedButtons?.set(position, null)
+						} }
 					}
 					coolant_button.run {
 						vehicle.coolantLogs.value?.firstOrNull()?.level?.let { coolantLevel ->
@@ -226,7 +250,10 @@ class DashboardActivity : AppCompatActivity() {
 							background = getButtonStyleFromLevel()
 						}
 						setOnClickListener {
-							if (!isSelected) displayDetailLayout(this, vehicle.coolantLogs.value as List<BaseLogEntry>?, MaintenanceType.COOLANT) else hideDetailLayout(this)
+							if (!isSelected) displayDetailLayout(this, vehicle.coolantLogs.value as List<BaseLogEntry>?, MaintenanceType.COOLANT) else {
+								hideDetailLayout(this)
+								selectedButtons?.set(position, null)
+							}
 						}
 					}
 				}
