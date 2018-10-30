@@ -61,8 +61,8 @@ class GasFragment: LogsFragment() {
 	override fun onSaveClicked(customView: View) {
 		val newEntry = GasLogEntry(
 				sdf.parse(customView.date_edit_text_gas.text.toString()),
-				customView.mileage_edit_text_gas.text.toString().toInt(),
-				customView.gallons_added_edit_text.text.toString().toDouble())
+				customView.mileage_edit_text_gas.text.toString().toIntOrNull(),
+				customView.gallons_added_edit_text.text.toString().toDoubleOrNull())
 
 		if (newEntry.isValidLogEntry()) {
 			//TODO: figure out how to do safer indexing for when there is no 0 index?
