@@ -44,7 +44,7 @@ class CheckupMainFragment : DialogFragment() {
 					}
 
 					override fun onCancelCheckup() {
-						dismiss()
+						cancelCheckup()
 					}
 
 					override fun onBackSelected() {
@@ -65,7 +65,7 @@ class CheckupMainFragment : DialogFragment() {
 					}
 
 					override fun onCancelCheckup() {
-						dismiss()
+						cancelCheckup()
 					}
 
 					override fun onBackSelected() {
@@ -93,7 +93,7 @@ class CheckupMainFragment : DialogFragment() {
 					}
 
 					override fun onCancelCheckup() {
-						dismiss()
+						cancelCheckup()
 					}
 
 					override fun onBackSelected() {
@@ -106,6 +106,11 @@ class CheckupMainFragment : DialogFragment() {
 			setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
 			commit()
 		}
+	}
+
+	fun cancelCheckup() {
+		dismiss()
+		model.clearPendingEntries()
 	}
 
 	interface OnCheckupFinishedListener {

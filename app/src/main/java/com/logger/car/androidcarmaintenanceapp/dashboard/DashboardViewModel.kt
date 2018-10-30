@@ -40,17 +40,15 @@ class DashboardViewModel : ViewModel() {
 	}
 
 	fun addPendingEntries(vehicleId: Int) {
-		vehicleRepository.pendingGasEntry?.let {
-			addGasEntry(vehicleId, it)
-			vehicleRepository.pendingGasEntry = null
-		}
-		vehicleRepository.pendingOilEntry?.let {
-			addOilLogEntry(vehicleId, it)
-			vehicleRepository.pendingOilEntry = null
-		}
-		vehicleRepository.pendingCoolantEntry?.let {
-			addCoolantLogEntry(vehicleId, it)
-			vehicleRepository.pendingCoolantEntry = null
-		}
+		vehicleRepository.pendingGasEntry?.let { addGasEntry(vehicleId, it) }
+		vehicleRepository.pendingOilEntry?.let { addOilLogEntry(vehicleId, it) }
+		vehicleRepository.pendingCoolantEntry?.let { addCoolantLogEntry(vehicleId, it) }
+		clearPendingEntries()
+	}
+
+	fun clearPendingEntries() {
+		vehicleRepository.pendingGasEntry = null
+		vehicleRepository.pendingOilEntry = null
+		vehicleRepository.pendingCoolantEntry = null
 	}
 }
