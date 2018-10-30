@@ -44,27 +44,26 @@
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
 		android:layout_marginTop="8dp"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
 		android:hint="Mileage"
 		android:inputType="number"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toBottomOf="@id/level_text" />
 
-	<TextView
-		android:id="@+id/save_date_text_view"
-		android:layout_width="wrap_content"
+	<EditText
+		android:id="@+id/date_edit_text_motor_fluid"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
+		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
+		android:focusable="false"
+		android:clickable="true"
+		android:inputType="none"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/mileage_edit_text"
-		tools:text="May 22, 2018" />
-
-	<ImageView
-		android:id="@+id/edit_image_view"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:src="@drawable/ic_edit_black_24dp"
-		app:layout_constraintBottom_toBottomOf="@id/save_date_text_view"
-		app:layout_constraintStart_toEndOf="@id/save_date_text_view"
-		app:layout_constraintTop_toTopOf="@id/save_date_text_view" />
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toBottomOf="@+id/mileage_edit_text"
+		tools:text="May 15, 2018" />
 
 </android.support.constraint.ConstraintLayout>

@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
-	private val sdf = SimpleDateFormat("MM/dd/yy", Locale.US)
+	private val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 
 	override fun getLayout() = R.layout.checkup_gas_fragment
 
@@ -34,6 +34,9 @@ class CheckupGasFragment : CheckupFragment<GasLogEntry>() {
 			enableProceedButtonIfReady()
 		}
 		Calendar.getInstance().run {
+			val todaysDate = this.time
+			model.getPendingGasEntry()?.entryDate = todaysDate
+			date_edit_text.setText(sdf.format(todaysDate))
 			date_edit_text.setOnClickListener {
 				DatePickerDialog(requireContext(), R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let { date ->

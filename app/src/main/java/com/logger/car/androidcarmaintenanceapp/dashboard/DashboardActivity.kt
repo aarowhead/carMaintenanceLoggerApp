@@ -1,5 +1,6 @@
 package com.logger.car.androidcarmaintenanceapp.dashboard
 
+import android.app.DatePickerDialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -49,6 +50,7 @@ class DashboardActivity : AppCompatActivity() {
 	}
 
 	private val vehicleAdapter = VehicleAdapter(mutableListOf())
+	private val sdf = SimpleDateFormat("MMMM dd, yyyy", Locale.US)
 	private lateinit var model: DashboardViewModel
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,19 +95,43 @@ class DashboardActivity : AppCompatActivity() {
 						add_entry_button.setOnClickListener {
 							//TODO: figure out a smart way for it to set the progress
 							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
-								level_indicator.progress = 50
-								level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-									override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
-										setLevelText(this@DashboardActivity, progress, level_text)
+								fun setUpMotorFluidLayout() {
+									date_edit_text_motor_fluid.setText(sdf.format(Calendar.getInstance().time))
+									Calendar.getInstance().apply {
+										date_edit_text_motor_fluid.setOnClickListener {
+											DatePickerDialog(context, R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+												Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
+													date_edit_text_motor_fluid.setText(sdf.format(it))
+												}
+											}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
+										}
 									}
-
-									override fun onStartTrackingTouch(p0: SeekBar?) {
+									level_indicator.progress = 50
+									level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+										override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
+											setLevelText(this@DashboardActivity, progress, level_text)
+										}
+										override fun onStartTrackingTouch(p0: SeekBar?) {}
+										override fun onStopTrackingTouch(p0: SeekBar?) {}
+									})
+									setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
+								}
+								when(type) {
+									MaintenanceType.OIL -> setUpMotorFluidLayout()
+									MaintenanceType.COOLANT -> setUpMotorFluidLayout()
+									MaintenanceType.GAS -> {
+										date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
+										Calendar.getInstance().apply {
+											date_edit_text_gas.setOnClickListener {
+												DatePickerDialog(context, R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+													Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
+														date_edit_text_gas.setText(sdf.format(it))
+													}
+												}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
+											}
+										}
 									}
-
-									override fun onStopTrackingTouch(p0: SeekBar?) {
-									}
-								})
-								setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
+								}
 							}) {
 								when (type) {
 									MaintenanceType.GAS -> {
@@ -113,7 +139,7 @@ class DashboardActivity : AppCompatActivity() {
 												vehicle.id,
 												GasLogEntry(
 														//TODO: figure out how to read in date
-														Calendar.getInstance().time,
+														sdf.parse(it.date_edit_text_gas.text.toString()),
 														it.mileage_edit_text_gas.text.toString().toInt(),
 														it.gallons_added_edit_text.text.toString().toDouble()
 												)
@@ -124,7 +150,7 @@ class DashboardActivity : AppCompatActivity() {
 										model.addOilLogEntry(
 												vehicle.id,
 												FluidLogEntry(
-														Calendar.getInstance().time,
+														sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
 														it.mileage_edit_text.text.toString().toInt(),
 														it.level_indicator.progress
 												)
@@ -134,7 +160,7 @@ class DashboardActivity : AppCompatActivity() {
 										model.addCoolantLogEntry(
 												vehicle.id,
 												FluidLogEntry(
-														Calendar.getInstance().time,
+														sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
 														it.mileage_edit_text.text.toString().toInt(),
 														it.level_indicator.progress
 												)

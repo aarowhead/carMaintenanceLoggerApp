@@ -63,7 +63,7 @@ abstract class MotorFluidsFragment : LogsFragment() {
 		dialogView.level_indicator_layout.level_indicator.progress = frameView.level_indicator.progress
 		dialogView.level_indicator_layout.level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
 			override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
-				DashboardActivity.setLevelText(requireContext(), progress, level_text)
+				DashboardActivity.setLevelText(requireContext(), progress, dialogView.level_text)
 			}
 
 			override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -72,12 +72,12 @@ abstract class MotorFluidsFragment : LogsFragment() {
 			override fun onStopTrackingTouch(p0: SeekBar?) {
 			}
 		})
-		dialogView.save_date_text_view.text = Calendar.getInstance().time.toString()
+		dialogView.date_edit_text_motor_fluid.setText(sdf.format(Calendar.getInstance().time))
 		Calendar.getInstance().run {
-			dialogView.edit_image_view.setOnClickListener {
+			dialogView.date_edit_text_motor_fluid.setOnClickListener {
 				DatePickerDialog(requireContext(), R.style.AppTheme_AlertDialog, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
 					Calendar.getInstance().apply { set(year, month, dayOfMonth) }.time.let {
-						dialogView.save_date_text_view.text = sdf.format(it)
+						dialogView.date_edit_text_motor_fluid.setText(sdf.format(it))
 					}
 				}, get(Calendar.YEAR), get(Calendar.MONTH), get(Calendar.DAY_OF_MONTH)).show()
 			}
