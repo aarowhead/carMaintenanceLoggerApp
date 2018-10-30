@@ -48,15 +48,33 @@ class VehicleRepository private constructor() {
 							FluidLogEntry(dateFormat.parse("20/09/2018"), 126000, 55),
 							FluidLogEntry(dateFormat.parse("06/09/2018"), 125200, 30)
 					)
-					gasLogs.value = mutableListOf(GasLogEntry(dateFormat.parse("06/10/2018"), 127000, 13.0))
+					gasLogs.value = mutableListOf(
+							GasLogEntry(dateFormat.parse("06/10/2018"), 127000, 13.0),
+							GasLogEntry(dateFormat.parse("21/09/2018"), 126000, 5.0)
+					)
 				},
 				Vehicle(
 						2,
 						"Toyota",
 						"Camry",
 						14
-				)
-		)
+				).apply {
+					oilLogs.value = mutableListOf(
+							FluidLogEntry(dateFormat.parse("07/10/2018"), 3750, 80),
+							FluidLogEntry(dateFormat.parse("01/10/2018"), 3000, 95),
+							FluidLogEntry(dateFormat.parse("22/09/2018"), 2355, 100)
+					)
+					coolantLogs.value = mutableListOf(
+							FluidLogEntry(dateFormat.parse("06/10/2018"), 3900, 100),
+							FluidLogEntry(dateFormat.parse("01/10/2018"), 3300, 80),
+							FluidLogEntry(dateFormat.parse("20/09/2018"), 2900, 55),
+							FluidLogEntry(dateFormat.parse("06/09/2018"), 2100, 30)
+					)
+					gasLogs.value = mutableListOf(
+							GasLogEntry(dateFormat.parse("06/10/2018"), 3900, 13.0),
+							GasLogEntry(dateFormat.parse("21/09/2018"), 3000, 5.0)
+					)
+				})
 	}
 
 	fun getVehiclebyId(id: Int) = vehicles.value?.find { it.id == id }

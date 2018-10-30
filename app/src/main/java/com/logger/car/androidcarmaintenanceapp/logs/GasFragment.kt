@@ -29,7 +29,7 @@ class GasFragment: LogsFragment() {
 		view.estimated_level_label.visibility = View.INVISIBLE
 		gasLogs = model?.currentVehicle?.gasLogs
 		gasLogs?.observe(this, android.arch.lifecycle.Observer {
-			view.mpg_indicator_text_view.text = "24"
+			view.mpg_indicator_text_view.text = model?.currentVehicle?.getAverageGasMileage().toString()
 			adapter.entries = it as List<GasLogEntry>
 			adapter.notifyDataSetChanged()
 		})

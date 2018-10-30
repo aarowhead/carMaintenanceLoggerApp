@@ -25,6 +25,7 @@ import com.logger.car.androidcarmaintenanceapp.showAddEntryDialog
 import kotlinx.android.synthetic.main.dashboard_activity.*
 import kotlinx.android.synthetic.main.dashboard_cardview.view.*
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
+import kotlinx.android.synthetic.main.gas_mileage_indicator.view.*
 import kotlinx.android.synthetic.main.level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
 import java.text.NumberFormat
@@ -142,7 +143,6 @@ class DashboardActivity : AppCompatActivity() {
 										model.addGasEntry(
 												vehicle.id,
 												GasLogEntry(
-														//TODO: figure out how to read in date
 														sdf.parse(it.date_edit_text_gas.text.toString()),
 														it.mileage_edit_text_gas.text.toString().toInt(),
 														it.gallons_added_edit_text.text.toString().toDouble()
@@ -216,7 +216,9 @@ class DashboardActivity : AppCompatActivity() {
 						}.show(supportFragmentManager, "TAG")
 					}
 					gas_button.run {
-						text = "18.1 MPG"
+						vehicle.gasLogs.observe(this@DashboardActivity, android.arch.lifecycle.Observer {
+							text = vehicle.getAverageGasMileage().toString() + " MPG"
+						})
 						setOnClickListener {
 							if (!isSelected) {
 								displayDetailLayout(this, vehicle.gasLogs.value, MaintenanceType.GAS)
@@ -225,7 +227,6 @@ class DashboardActivity : AppCompatActivity() {
 								selectedButtons?.set(position, null)
 							}
 						}
-//						TODO("Figure out how to calculate mileage")
 					}
 
 					oil_button.run {
