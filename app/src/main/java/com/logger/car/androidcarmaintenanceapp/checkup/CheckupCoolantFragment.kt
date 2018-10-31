@@ -8,7 +8,7 @@ import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import kotlinx.android.synthetic.main.checkup_coolant_fragment.view.*
-import kotlinx.android.synthetic.main.level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.oil_level_indicator_layout.view.*
 
 class CheckupCoolantFragment : CheckupFragment<FluidLogEntry>() {
 	override fun getLayout() = R.layout.checkup_coolant_fragment

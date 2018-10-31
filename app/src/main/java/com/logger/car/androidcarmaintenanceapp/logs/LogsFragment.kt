@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.logger.car.androidcarmaintenanceapp.R
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
-import kotlinx.android.synthetic.main.level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.oil_level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_recycler_view.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
 import java.text.SimpleDateFormat
@@ -42,12 +42,7 @@ abstract class LogsFragment : Fragment() {
 
 	abstract fun getAdapter(): RecyclerView.Adapter<LogAdapter.LogViewHolder>
 
-	open fun getIndicatorLayout(): View {
-		val view = layoutInflater.inflate(R.layout.level_indicator_layout, null)
-		view.level_indicator.isEnabled = false
-		view.level_indicator.thumb = null
-		return view
-	}
+	abstract fun getIndicatorLayout(): View
 
 	abstract fun getDialogCustomView(): View
 

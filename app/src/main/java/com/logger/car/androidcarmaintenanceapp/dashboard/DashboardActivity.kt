@@ -25,9 +25,8 @@ import com.logger.car.androidcarmaintenanceapp.showAddEntryDialog
 import kotlinx.android.synthetic.main.dashboard_activity.*
 import kotlinx.android.synthetic.main.dashboard_cardview.view.*
 import kotlinx.android.synthetic.main.gas_entry_dialog_fragment.view.*
-import kotlinx.android.synthetic.main.gas_mileage_indicator.view.*
-import kotlinx.android.synthetic.main.level_indicator_layout.view.*
-import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
+import kotlinx.android.synthetic.main.oil_level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.set_oil_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -99,7 +98,7 @@ class DashboardActivity : AppCompatActivity() {
 						}
 						add_entry_button.setOnClickListener {
 							//TODO: figure out a smart way for it to set the progress
-							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else R.layout.set_level_dialog_fragment, null).apply {
+							this@DashboardActivity.showAddEntryDialog(layoutInflater.inflate(if (type == MaintenanceType.GAS) R.layout.gas_entry_dialog_fragment else if (type == com.logger.car.androidcarmaintenanceapp.domain.MaintenanceType.OIL) R.layout.set_oil_level_dialog_fragment else R.layout.set_coolant_level_dialog_fragment, null).apply {
 								fun setUpMotorFluidLayout(startingLevel: Int) {
 									date_edit_text_motor_fluid.setText(sdf.format(Calendar.getInstance().time))
 									Calendar.getInstance().apply {

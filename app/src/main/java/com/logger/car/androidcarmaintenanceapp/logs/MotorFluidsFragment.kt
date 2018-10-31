@@ -13,13 +13,12 @@ import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
 import com.logger.car.androidcarmaintenanceapp.getMonthName
-import kotlinx.android.synthetic.main.level_indicator_layout.*
-import kotlinx.android.synthetic.main.level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.oil_level_indicator_layout.*
+import kotlinx.android.synthetic.main.oil_level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_date_layout.view.*
 import kotlinx.android.synthetic.main.log_entry.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
-import kotlinx.android.synthetic.main.set_level_dialog_fragment.*
-import kotlinx.android.synthetic.main.set_level_dialog_fragment.view.*
+import kotlinx.android.synthetic.main.set_oil_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -58,8 +57,10 @@ abstract class MotorFluidsFragment : LogsFragment() {
 		}
 	}
 
+	abstract fun getDialogIndicatorLayout(): Int
+
 	override fun getDialogCustomView(): View {
-		val dialogView = layoutInflater.inflate(R.layout.set_level_dialog_fragment, null)
+		val dialogView = layoutInflater.inflate(getDialogIndicatorLayout(), null)
 		dialogView.level_indicator_layout.level_indicator.progress = frameView.level_indicator.progress
 		dialogView.level_indicator_layout.level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
 			override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -108,8 +109,26 @@ abstract class MotorFluidsFragment : LogsFragment() {
 
 class CoolantFragment : MotorFluidsFragment() {
 	override fun getFluidList() = model?.currentVehicle?.coolantLogs
+
+	override fun getDialogIndicatorLayout() = R.layout.set_coolant_level_dialog_fragment
+
+	override fun getIndicatorLayout(): View {
+		val view = layoutInflater.inflate(R.layout.coolant_level_indicator_layout, null)
+		view.level_indicator.isEnabled = false
+		view.level_indicator.thumb = null
+		return view
+	}
 }
 
 class OilFragment : MotorFluidsFragment() {
 	override fun getFluidList() = model?.currentVehicle?.oilLogs
+
+	override fun getDialogIndicatorLayout() = R.layout.set_oil_level_dialog_fragment
+
+	override fun getIndicatorLayout(): View {
+		val view = layoutInflater.inflate(R.layout.oil_level_indicator_layout, null)
+		view.level_indicator.isEnabled = false
+		view.level_indicator.thumb = null
+		return view
+	}
 }

@@ -9,12 +9,13 @@
     <SeekBar
         android:id="@+id/level_indicator"
         style="@android:style/Widget.Material.Light.SeekBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:progressDrawable="@drawable/custom_seekbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:progressDrawable="@drawable/custom_seekbar_coolant"
         android:thumb="@drawable/custom_thumb_adjustable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

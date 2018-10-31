@@ -1,0 +1,15 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/ic_custom_coolant_container_empty"
+        android:height="220dp"
+        android:top="40dp">
+    </item>
+    <item android:id="@android:id/progress"
+        android:top="40dp"
+        android:height="220dp">
+        <clip android:drawable="@drawable/ic_custom_coolant_container_full" />
+    </item>
+
+</layer-list>
