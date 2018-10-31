@@ -128,8 +128,8 @@ class DashboardActivity : AppCompatActivity() {
 									setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
 								}
 								when (type) {
-									MaintenanceType.OIL -> setUpMotorFluidLayout(vehicle.oilLogs.value?.first()?.level ?: 0)
-									MaintenanceType.COOLANT -> setUpMotorFluidLayout(vehicle.coolantLogs.value?.first()?.level ?: 0)
+									MaintenanceType.OIL -> setUpMotorFluidLayout(vehicle.getEstimatedOilLevel()?.toInt() ?: 0)
+									MaintenanceType.COOLANT -> setUpMotorFluidLayout(vehicle.getEstimatedCoolantLevel()?.toInt() ?: 0)
 									MaintenanceType.GAS -> {
 										date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
 										Calendar.getInstance().apply {
@@ -211,7 +211,13 @@ class DashboardActivity : AppCompatActivity() {
 					})
 
 					car_name.text = "${vehicle.make} ${vehicle.model}"
-					status.text = "Testing"
+					status.text = when {
+						vehicle.getEstimatedOilLevel() ?: 100 <= resources.getInteger(R.integer.critical_threshold) -> "Your estimated oil level is critically low!  Be sure to fill it up soon!"
+						vehicle.getEstimatedCoolantLevel() ?: 100 <= resources.getInteger(R.integer.critical_threshold) -> "Your estimated coolant level is critically low!  Be sure to fill it up soon!"
+						!vehicle.hasRecentOilLog() -> "It's been ${vehicle.getTimeSinceLastOilCheck()} days since you last checked your oil level.  It's probably time for another checkup!"
+						!vehicle.hasRecentCoolantLog() -> "It's been ${vehicle.getTimeSinceLastCoolantCheck()} days since you last checked your coolant level.  It's probably time for another checkup!"
+						else -> "Everything looks great!"
+					}
 					if (position < selectedButtons?.size ?: 0) {
 						selectedButtons?.get(position)?.let {
 							when (it) {
@@ -245,7 +251,7 @@ class DashboardActivity : AppCompatActivity() {
 					}
 
 					oil_button.run {
-						model.getEstimatedOilLevel(vehicle.id)?.let { oilLevel ->
+						vehicle.getEstimatedOilLevel()?.let { oilLevel ->
 							text = "$oilLevel%"
 							background = getButtonStyleFromLevel(oilLevel.toInt())
 						} ?: run {
@@ -260,7 +266,7 @@ class DashboardActivity : AppCompatActivity() {
 						}
 					}
 					coolant_button.run {
-						model.getEstimatedCoolantLevel(vehicle.id)?.let { coolantLevel ->
+						vehicle.getEstimatedCoolantLevel()?.let { coolantLevel ->
 							text = "$coolantLevel%"
 							background = getButtonStyleFromLevel(coolantLevel.toInt())
 						} ?: run {
