@@ -68,6 +68,7 @@ class DashboardActivity : AppCompatActivity() {
 			vehicleAdapter.selectedButtons = arrayOfNulls(it?.size ?: 0)
 		})
 	}
+
 	inner class VehicleAdapter(var vehicles: List<Vehicle>?) : RecyclerView.Adapter<VehicleAdapter.VehicleViewHolder>() {
 		var selectedButtons: Array<MaintenanceType?>? = null
 
@@ -111,18 +112,19 @@ class DashboardActivity : AppCompatActivity() {
 										}
 									}
 									level_indicator.progress = startingLevel
-									level_indicator.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+									level_indicator.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 										override fun onProgressChanged(bar: SeekBar, progress: Int, fromUser: Boolean) {
 											setLevelText(this@DashboardActivity, progress, level_text)
 										}
+
 										override fun onStartTrackingTouch(p0: SeekBar?) {}
 										override fun onStopTrackingTouch(p0: SeekBar?) {}
 									})
 									setLevelText(this@DashboardActivity, level_indicator.progress, level_text)
 								}
-								when(type) {
-									MaintenanceType.OIL -> setUpMotorFluidLayout(vehicle.oilLogs.value?.first()?.level ?: 0)
-									MaintenanceType.COOLANT -> setUpMotorFluidLayout(vehicle.coolantLogs.value?.first()?.level ?: 0)
+								when (type) {
+									MaintenanceType.OIL -> setUpMotorFluidLayout(vehicle.getEstimatedOilLevel()?.toInt() ?: 0)
+									MaintenanceType.COOLANT -> setUpMotorFluidLayout(vehicle.getEstimatedCoolantLevel()?.toInt() ?: 0)
 									MaintenanceType.GAS -> {
 										date_edit_text_gas.setText(sdf.format(Calendar.getInstance().time))
 										Calendar.getInstance().apply {
@@ -136,38 +138,47 @@ class DashboardActivity : AppCompatActivity() {
 										}
 									}
 								}
-							}) {
+							}, type) {
 								when (type) {
 									MaintenanceType.GAS -> {
-										model.addGasEntry(
-												vehicle.id,
-												GasLogEntry(
-														sdf.parse(it.date_edit_text_gas.text.toString()),
-														it.mileage_edit_text_gas.text.toString().toInt(),
-														it.gallons_added_edit_text.text.toString().toDouble()
-												)
-										)
+										GasLogEntry(
+												sdf.parse(it.date_edit_text_gas.text.toString()),
+												it.mileage_edit_text_gas.text.toString().toIntOrNull(),
+												it.gallons_added_edit_text.text.toString().toDoubleOrNull()
+										).let { log ->
+											if (log.isValidLogEntry()) {
+												model.addGasEntry(vehicle.id, log)
+											} else {
+												Toast.makeText(context, "Unable to save entry due to missing data.", Toast.LENGTH_LONG).show()
+											}
+										}
 									}
 									//TODO: get rid of this duplicate code
 									MaintenanceType.OIL -> {
-										model.addOilLogEntry(
-												vehicle.id,
-												FluidLogEntry(
-														sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
-														it.mileage_edit_text.text.toString().toInt(),
-														it.level_indicator.progress
-												)
-										)
+										FluidLogEntry(
+												sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
+												it.mileage_edit_text.text.toString().toIntOrNull(),
+												it.level_indicator.progress
+										).let { log ->
+											if (log.isValidLogEntry()) {
+												model.addOilLogEntry(vehicle.id, log)
+											} else {
+												Toast.makeText(context, "Unable to save entry due to missing data.", Toast.LENGTH_LONG).show()
+											}
+										}
 									}
 									MaintenanceType.COOLANT -> {
-										model.addCoolantLogEntry(
-												vehicle.id,
-												FluidLogEntry(
-														sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
-														it.mileage_edit_text.text.toString().toInt(),
-														it.level_indicator.progress
-												)
-										)
+										FluidLogEntry(
+												sdf.parse(it.date_edit_text_motor_fluid.text.toString()),
+												it.mileage_edit_text.text.toString().toIntOrNull(),
+												it.level_indicator.progress
+										).let { log ->
+											if (log.isValidLogEntry()) {
+												model.addCoolantLogEntry(vehicle.id, log)
+											} else {
+												Toast.makeText(context, "Unable to save entry due to missing data.", Toast.LENGTH_LONG).show()
+											}
+										}
 									}
 								}
 								//TODO: Change this to check boolean return to see if it was successfully added
@@ -195,7 +206,13 @@ class DashboardActivity : AppCompatActivity() {
 					})
 
 					car_name.text = "${vehicle.make} ${vehicle.model}"
-					status.text = "Testing"
+					status.text = when {
+						vehicle.getEstimatedOilLevel() ?: 100 <= resources.getInteger(R.integer.critical_threshold) -> "Your estimated oil level is critically low!  Be sure to fill it up soon!"
+						vehicle.getEstimatedCoolantLevel() ?: 100 <= resources.getInteger(R.integer.critical_threshold) -> "Your estimated coolant level is critically low!  Be sure to fill it up soon!"
+						!vehicle.hasRecentOilLog() -> "It's been ${vehicle.getTimeSinceLastOilCheck()} days since you last checked your oil level.  It's probably time for another checkup!"
+						!vehicle.hasRecentCoolantLog() -> "It's been ${vehicle.getTimeSinceLastCoolantCheck()} days since you last checked your coolant level.  It's probably time for another checkup!"
+						else -> "Everything looks great!"
+					}
 					if (position < selectedButtons?.size ?: 0) {
 						selectedButtons?.get(position)?.let {
 							when (it) {
@@ -229,20 +246,22 @@ class DashboardActivity : AppCompatActivity() {
 					}
 
 					oil_button.run {
-						model.getEstimatedOilLevel(vehicle.id)?.let { oilLevel ->
+						vehicle.getEstimatedOilLevel()?.let { oilLevel ->
 							text = "$oilLevel%"
 							background = getButtonStyleFromLevel(oilLevel.toInt())
 						} ?: run {
 							text = "???"
 							background = getButtonStyleFromLevel()
 						}
-						setOnClickListener { if (!isSelected) displayDetailLayout(this, vehicle.oilLogs.value as List<BaseLogEntry>?, MaintenanceType.OIL) else {
-							hideDetailLayout(this)
-							selectedButtons?.set(position, null)
-						} }
+						setOnClickListener {
+							if (!isSelected) displayDetailLayout(this, vehicle.oilLogs.value as List<BaseLogEntry>?, MaintenanceType.OIL) else {
+								hideDetailLayout(this)
+								selectedButtons?.set(position, null)
+							}
+						}
 					}
 					coolant_button.run {
-						model.getEstimatedCoolantLevel(vehicle.id)?.let { coolantLevel ->
+						vehicle.getEstimatedCoolantLevel()?.let { coolantLevel ->
 							text = "$coolantLevel%"
 							background = getButtonStyleFromLevel(coolantLevel.toInt())
 						} ?: run {

@@ -13,12 +13,12 @@ import com.logger.car.androidcarmaintenanceapp.dashboard.DashboardActivity
 import com.logger.car.androidcarmaintenanceapp.domain.FluidLogEntry
 import com.logger.car.androidcarmaintenanceapp.getDayOfMonth
 import com.logger.car.androidcarmaintenanceapp.getMonthName
-import kotlinx.android.synthetic.main.oil_level_indicator_layout.*
-import kotlinx.android.synthetic.main.oil_level_indicator_layout.view.*
+import kotlinx.android.synthetic.main.coolant_level_indicator_layout.*
+import kotlinx.android.synthetic.main.coolant_level_indicator_layout.view.*
 import kotlinx.android.synthetic.main.log_date_layout.view.*
 import kotlinx.android.synthetic.main.log_entry.view.*
 import kotlinx.android.synthetic.main.logs_fragment.view.*
-import kotlinx.android.synthetic.main.set_oil_level_dialog_fragment.view.*
+import kotlinx.android.synthetic.main.set_coolant_level_dialog_fragment.view.*
 import java.text.NumberFormat
 import java.util.*
 
@@ -44,7 +44,7 @@ abstract class MotorFluidsFragment : LogsFragment() {
 
 	override fun onSaveClicked(customView: View) {
 		val newEntry = FluidLogEntry(
-				Calendar.getInstance().time,
+				sdf.parse(customView.date_edit_text_motor_fluid.text.toString()),
 				customView.mileage_edit_text.text.toString().toIntOrNull(),
 				customView.level_indicator_layout.level_indicator.progress)
 		if (newEntry.isValidLogEntry()) {
@@ -118,6 +118,8 @@ class CoolantFragment : MotorFluidsFragment() {
 		view.level_indicator.thumb = null
 		return view
 	}
+
+	override fun getFluidType() = "Coolant"
 }
 
 class OilFragment : MotorFluidsFragment() {
@@ -131,4 +133,6 @@ class OilFragment : MotorFluidsFragment() {
 		view.level_indicator.thumb = null
 		return view
 	}
+
+	override fun getFluidType() = "Oil"
 }
